@@ -2,14 +2,14 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: adm-server
-  namespace: adm-2
+  namespace: adm-3
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /api/$2
 spec:
   rules:
   - http:
       paths:
-      - path: /adm-2/api(/|$)(.*)
+      - path: /adm-3/api(/|$)(.*)
         backend:
           serviceName: adm-server
           servicePort: 3000

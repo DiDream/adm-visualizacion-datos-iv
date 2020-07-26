@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: adm-server
-  namespace: adm-2
+  namespace: adm-3
   labels:
     app: adm-server
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: adm-server
-          image: docker.pkg.github.com/didream/adm-visualizacion-datos-ii/adm-server-2:latest
+          image: docker.pkg.github.com/didream/adm-visualizacion-datos-ii/adm-server-3:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000

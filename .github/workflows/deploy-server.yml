@@ -12,10 +12,12 @@ env:
   GKE_ZONE: europe-north1-a
 
   # Datos del despliegue en k8s
-  NAMESPACE_NAME: adm-2
+  NAMESPACE_NAME: adm-3
   DEPLOYMENT_NAME: adm-server
   CONTAINER_NAME: adm-server
-  IMAGE_NAME: docker.pkg.github.com/didream/adm-visualizacion-datos-ii/adm-server-2
+  IMAGE_NAME: docker.pkg.github.com/didream/adm-visualizacion-datos-ii/adm-server-3
+
+  SECRET_GITHUB_REGISTRY: ${{ secrets.SECRET_GITHUB_REGISTRY }}
 
 jobs:
   server_to_registry:
@@ -33,7 +35,7 @@ jobs:
           registry: docker.pkg.github.com
           dockerfile: server/etc/Dockerfile
           path: .
-          repository: didream/adm-visualizacion-datos-ii/adm-server-2
+          repository: didream/adm-visualizacion-datos-ii/adm-server-3
           tag_with_sha: true
           tag_with_ref: true
           tags: ${{ github.sha }}
@@ -51,7 +53,8 @@ jobs:
 
       - name: Create k8s resources of app
         run: |-
-          kubectl create -f etc/k8s || true
+          kubectl create -f etc/k8s/01-namespace.yml || true
+          cat etc/k8s/02-github-package-secret.yml | sed "s/\${{SECRET_GITHUB_REGISTRY}}/$SECRET_GITHUB_REGISTRY/" | kubectl apply -f - || true
           kubectl create -f server/etc/k8s || true
 
       - name: Update container image

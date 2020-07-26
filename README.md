@@ -1,5 +1,5 @@
 # Visualización de Datos II
-**Puede acceder a la demo de la aplicación en [http://edu.ajmonfue.me/adm-2/](http://edu.ajmonfue.me/adm-2/)**
+**Puede acceder a la demo de la aplicación en [http://edu.ajmonfue.me/adm-3/](http://edu.ajmonfue.me/adm-3/)**
 
 ## Enunciados
 ### 1. Lee el documento "Why scientists need to be better at data visualizationURL" desde la sección "Ruinous rainbows" hasta el final del mismo. Haz un resumen de no más de una página con las conclusiones que obtienes.
