@@ -54,7 +54,7 @@ jobs:
       - name: Create k8s resources of app
         run: |-
           kubectl create -f etc/k8s/01-namespace.yml || true
-          cat etc/k8s/02-github-package-secret.yml | sed "s/\${{SECRET_GITHUB_REGISTRY}}/$SECRET_GITHUB_REGISTRY/" | kubectl apply -f - || true
+          cat etc/k8s/02-github-package-secret.yml | sed "s/<SECRET_GITHUB_REGISTRY>/$SECRET_GITHUB_REGISTRY/" | kubectl apply -f - || true
           kubectl create -f server/etc/k8s || true
 
       - name: Update container image
