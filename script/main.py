@@ -9,6 +9,7 @@ import json
 
 import chart as charts
 import data_source as data_sources
+import urllib
 
 chart_constructors = {
     'bar': charts.BarChart,
@@ -32,7 +33,7 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument('--x-axis', help='Chart X axis', required=True)
 parser.add_argument('--y-axis', help='Chart Y axis', required=True)
-parser.add_argument('--url', help='Url of data')
+parser.add_argument('--data', help='Url or path of file with data. Only formats csv and json')
 parser.add_argument('--chart-type', help='Chart type', default='line', choices=['line', 'bar', 'scatter'])
 parser.add_argument('--chart-name', help='Chart name', default='Chart name')
 parser.add_argument('--chart-file-name', help='Chart file name')
@@ -56,15 +57,23 @@ if args.chart_type not in chart_constructors:
     sys.exit(1)
 
 data_source = None
-if args.url is not None:
-    data_source = data_sources.UrlDataSource(args.url)
+
+if args.data is not None:
+    data_source = data_sources.UrlDataSource(args.data)
 elif not sys.stdin.isatty():
     data_source = data_sources.StdinDataSource(sys.stdin.read())
 else:
-    print('Especifique una url o el contenido de los datos')
+    print('Especifique el contenido de los datos mediante el argumento --data o < NOMBRE FICHERO')
     sys.exit(1)
 
-csv_data = data_source.get_data()
+try:
+    csv_data = data_source.get_data()
+except FileNotFoundError:
+    print('No se ha encontrado el fichero especificado')
+    sys.exit(1)
+except urllib.error.HTTPError:
+    print('Datos no encontrados mediante URL')
+    sys.exit(1)
 
 # Se comprueba si los campos seleccionados para los ejes están presentes en el header del csv
 x_axis_name = args.x_axis.split(',')

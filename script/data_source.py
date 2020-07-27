@@ -8,7 +8,10 @@ class DataSource:
         self.data = data
 
     def get_data(self):
-        return pandas.read_csv(self.data)
+        try:
+            return pandas.read_json(self.data)
+        except ValueError:
+            return pandas.read_csv(self.data)
 
 
 class UrlDataSource(DataSource):
