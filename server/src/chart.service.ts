@@ -41,8 +41,8 @@ export class ChartService {
             const chartGenerator = spawn(this.configService.get('PYTHON_COMMAND') || 'python3', [
                 this.configService.get('SCRIPT_PATH'),
                 '--as-json',
-                '--x-axis', chartArguments.xAxis.join(','),
-                '--y-axis', chartArguments.yAxis.join(','),
+                '--x-axis', ...chartArguments.xAxis,
+                '--y-axis', ...chartArguments.yAxis,
                 '--chart-type', chartArguments.chartType,
                 ...(chartArguments.url ? ['--data', chartArguments.url] : []),
                 ...(chartArguments.groupByFunction ? ['--group-by-func', chartArguments.groupByFunction] : []),

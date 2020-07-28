@@ -31,8 +31,8 @@ parser = argparse.ArgumentParser(
     formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=80, width=130)
 )
 
-parser.add_argument('--x-axis', help='Chart X axis', required=True)
-parser.add_argument('--y-axis', help='Chart Y axis', required=True)
+parser.add_argument('--x-axis', help='Chart X axis', nargs='+', type=str, required=True)
+parser.add_argument('--y-axis', help='Chart Y axis', nargs='+', type=str, required=True)
 parser.add_argument('--data', help='Url or path of file with data. Only formats csv and json')
 parser.add_argument('--chart-type', help='Chart type', default='line', choices=['line', 'bar', 'scatter'])
 parser.add_argument('--chart-name', help='Chart name', default='Chart name')
@@ -76,8 +76,8 @@ except urllib.error.HTTPError:
     sys.exit(1)
 
 # Se comprueba si los campos seleccionados para los ejes están presentes en el header del csv
-x_axis_name = args.x_axis.split(',')
-y_axis_name = args.y_axis.split(',')
+x_axis_name = args.x_axis
+y_axis_name = args.y_axis
 
 if len(x_axis_name) > 1 and len(y_axis_name) > 1:
     print('Sólo puede especificar múltiples campos para un eje')
