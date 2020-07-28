@@ -8,6 +8,7 @@ export interface IChartArguments {
     yAxis: string[],
     chartType: string,
     groupByFunction: string,
+    groupBy: string,
     dataBase64: {
         filename: string,
         filetype: string
@@ -15,7 +16,7 @@ export interface IChartArguments {
     }
 }
 
-export interface IChartData {
+export interface IChartOutput {
     imageBase64: string,
     sourceData: {
         data: { [key: string]: any }[],
@@ -43,8 +44,9 @@ export class ChartService {
                 '--x-axis', chartArguments.xAxis.join(','),
                 '--y-axis', chartArguments.yAxis.join(','),
                 '--chart-type', chartArguments.chartType,
-                ...(chartArguments.url ? ['--url', chartArguments.url] : []),
+                ...(chartArguments.url ? ['--data', chartArguments.url] : []),
                 ...(chartArguments.groupByFunction ? ['--group-by-func', chartArguments.groupByFunction] : []),
+                ...(chartArguments.groupBy ? ['--group-by', chartArguments.groupBy] : [])
             ]);
 
             if (chartArguments.dataBase64) {
@@ -66,7 +68,7 @@ export class ChartService {
                     return reject(new Error(errorBuffer || 'Error durante la ejecución del script'));
                 }
                 try {
-                    const dataResult: IChartData = JSON.parse(dataResultBuffer)
+                    const dataResult: IChartOutput = JSON.parse(dataResultBuffer)
                     resolve(dataResult);
                 }
                 catch (err) {

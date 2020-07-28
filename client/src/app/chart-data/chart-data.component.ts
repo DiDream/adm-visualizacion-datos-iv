@@ -1,6 +1,5 @@
-import { Component, ChangeDetectionStrategy, Input, ChangeDetectorRef, Pipe, Directive, HostBinding } from "@angular/core";
-import { IChartImportedData } from './chart-data.model';
-import { IChartArguments } from '../chart-form/chart.service';
+import { Component, ChangeDetectionStrategy, Input, ChangeDetectorRef, Directive, HostBinding } from "@angular/core";
+import { IChartImportedData, IChartArguments } from '../core/chart.model';
 
 @Directive({
     selector: '[selectedByAxis]'

@@ -1,5 +1,5 @@
-import { IChartArguments, IChartData } from "../chart-form/chart.service";
 import * as Chart from 'chart.js';
+import { IChartArguments, IChartOutput } from './chart.model';
 
 export abstract class ADMChart {
     protected abstract readonly type: string;
@@ -7,7 +7,7 @@ export abstract class ADMChart {
     constructor(
         public context: CanvasRenderingContext2D,
         public chartArguments: IChartArguments,
-        public chartData: IChartData) { }
+        public chartData: IChartOutput) { }
 
     public build() {
         const { chartType, xAxis, yAxis } = this.chartArguments;

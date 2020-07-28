@@ -67,6 +67,15 @@
             </nb-select>
         </div>
         <div class="form-group col-xl-6">
+            <label for="">Agrupar por</label>
+            <nb-select fullWidth placeholder="Campo de agrupación" formControlName="groupBy">
+                <nb-option [value]="null">No seleccionado</nb-option>
+                <nb-option *ngFor="let csvField of csvFields" [value]="csvField">
+                    {{ csvField }}
+                </nb-option>
+            </nb-select>
+        </div>
+        <div class="form-group col-xl-6">
             <label for="">Función de agrupación</label>
             <nb-select fullWidth placeholder="Función" formControlName="groupByFunction">
                 <nb-option *ngFor="let groupByFunction of groupByFunctions" [value]="groupByFunction.key">

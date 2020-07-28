@@ -1,53 +1,11 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as papaparse from 'papaparse';
-import { DataService } from './data.service';
-import { ChartService } from './chart.service';
-import { IChartImportedData } from '../chart-data/chart-data.model';
+import { DataService } from '../core/data.service';
+import { ChartService } from '../core/chart.service';
+import { IChartImportedData, GROUP_BY_FUNCTIONS, CHART_TYPES, ChartTypeEnum, GroupByFunctionEnum } from '../core/chart.model';
 import { finalize } from 'rxjs/operators';
 import { NbToastrService } from '@nebular/theme';
-
-const CHART_TYPES = [
-    {
-        key: 'line',
-        label: 'Líneas'
-    },
-    {
-        key: 'bar',
-        label: 'Barras'
-    },
-    {
-        key: 'scatter',
-        label: 'Dispersión'
-    }
-];
-
-const GROUP_BY_FUNCTIONS = [
-    {
-        key: 'sum',
-        label: 'Suma'
-    },
-    {
-        key: 'max',
-        label: 'Máximo'
-    },
-    {
-        key: 'min',
-        label: 'Mínimo'
-    },
-    {
-        key: 'prod',
-        label: 'Producto'
-    },
-    {
-        key: 'first',
-        label: 'Primera ocurrencia'
-    },
-    {
-        key: 'last',
-        label: 'Última ocurrencia'
-    },
-]
 
 @Component({
     selector: 'app-chart-form',
@@ -93,13 +51,32 @@ export class ChartFormComponent {
         this.formArguments = this.fb.group({
             xAxis: [ [], Validators.required ],
             yAxis: [ [], Validators.required ],
-            chartType: [ 'line', Validators.required ],
-            groupByFunction: [ 'sum',  ]
+            chartType: [ ChartTypeEnum.LINE, Validators.required ],
+            groupByFunction: [ GroupByFunctionEnum.SUM ],
+            groupBy: [null]
         });
 
         this.formArgumentsInitialValues = this.formArguments.value;
 
+        const groupByControl = this.formArguments.get('groupBy');
         this.formArguments.valueChanges.subscribe(values => {
+            const { chartType, xAxis, yAxis } = values;
+            if (chartType == ChartTypeEnum.LINE || chartType == ChartTypeEnum.BAR) {
+                groupByControl.disable({emitEvent: false});
+
+                if (Array.isArray(xAxis) && xAxis.length > 1) {
+                    if (yAxis) {
+                        groupByControl.setValue(yAxis[0], { emitEvent: false })
+                    }
+                }
+                else if (xAxis.length == 1) {
+                    groupByControl.setValue(xAxis[0], { emitEvent: false })
+                }
+            }
+            else if (chartType == ChartTypeEnum.SCATTER ){
+                groupByControl.enable({emitEvent: false})
+            }
+
             this.argumentsChange.emit(values);
         })
     }

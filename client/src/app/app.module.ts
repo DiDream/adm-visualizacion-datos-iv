@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { ChartComponent } from './chart/chart.component';
+import { ChartViewComponent } from './chart-view/chart-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbThemeModule, NbLayoutModule, NbInputModule, NbButtonModule, NbSelectModule, NbSidebarModule, NbTabsetModule, NbSpinnerModule, NbCardModule, NbToastrModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
@@ -17,7 +17,7 @@ import { ChartDataComponent, SelectedByAxisDirective } from './chart-data/chart-
   declarations: [
     AppComponent,
     ChartFormComponent,
-    ChartComponent,
+    ChartViewComponent,
     ChartDataComponent,
     SelectedByAxisDirective
   ],
