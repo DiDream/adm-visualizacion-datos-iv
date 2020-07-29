@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 
 
 class ADMChart:
@@ -115,3 +116,55 @@ class ScatterChart(ADMChart):
         axes.scatter(self.csv_data[self.x_axis_name], self.csv_data[self.y_axis_name])
 
 
+class ViolinChart(ADMChart):
+    def __init__(self, x_axis_name, y_axis_name, csv_data):
+        super().__init__(x_axis_name, y_axis_name, csv_data)
+        self.x_axis_name = self.x_axis_name[0] if isinstance(self.x_axis_name, list) else self.x_axis_name
+        self.y_axis_name = self.y_axis_name[0] if isinstance(self.y_axis_name, list) else self.y_axis_name
+
+    def generate_chart(self, chart_name):
+        fig = plt.figure()
+        fig.suptitle(chart_name)
+
+        sns.violinplot(x=self.csv_data[self.x_axis_name], y=self.csv_data[self.y_axis_name])
+
+        return fig
+
+
+# No es necesario --y-axis
+class HistogramChart(ADMChart):
+    def generate_chart(self, chart_name):
+        sns.set()
+        fig = plt.figure()
+
+        fig.suptitle(chart_name)
+
+        # Disable Kernel density estimation -> https://stackoverflow.com/a/57802471
+        sns.distplot(self.csv_data[self.x_axis_name], kde=False, norm_hist=False)
+
+        return fig
+
+
+class BoxPlotChart(ADMChart):
+    def __init__(self, x_axis_name, y_axis_name, csv_data):
+        super().__init__(x_axis_name, y_axis_name, csv_data)
+        self.x_axis_name = self.x_axis_name[0] if isinstance(self.x_axis_name, list) else self.x_axis_name
+        self.y_axis_name = self.y_axis_name[0] if isinstance(self.y_axis_name, list) else self.y_axis_name
+
+    def generate_chart(self, chart_name):
+        sns.set()
+        fig = plt.figure()
+        fig.suptitle(chart_name)
+
+        sns.boxplot(x=self.csv_data[self.x_axis_name], y=self.csv_data[self.y_axis_name])
+        return fig
+
+
+chart_constructors = {
+    'bar': BarChart,
+    'line': LineChart,
+    'scatter': ScatterChart,
+    'violin': ViolinChart,
+    'histogram': HistogramChart,
+    'box': BoxPlotChart
+}
