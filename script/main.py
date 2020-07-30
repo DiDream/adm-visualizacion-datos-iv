@@ -26,6 +26,18 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument('--x-axis', help='Chart X axis', nargs='+', type=str, required=True)
 parser.add_argument('--y-axis', help='Chart Y axis', nargs='+', type=str, required=True)
+parser.add_argument(
+    '--x-select',
+    help='x axis data values ​​selected for rendering',
+    nargs='+',
+    type=str
+)
+parser.add_argument(
+    '--y-select',
+    help='y axis data values ​​selected for rendering',
+    nargs='+',
+    type=str
+)
 parser.add_argument('--data', help='Url or path of file with data. Only formats csv and json')
 parser.add_argument('--chart-type', help='Chart type', default='line', choices=list(charts.chart_constructors.keys()))
 parser.add_argument('--chart-name', help='Chart name', default='Chart name')
@@ -81,7 +93,7 @@ for name in y_axis_name:
         sys.exit(1)
 
 
-# Agrupación de los datos
+# BEGIN Agrupación de los datos
 group_by = None
 
 if args.chart_type == 'scatter':
@@ -93,6 +105,15 @@ elif args.chart_type == 'line' or args.chart_type == 'bar':
 
 if group_by is not None:
     csv_data = group_by_functions[args.group_by_func](csv_data.groupby(group_by, as_index=False))
+
+# END Agrupación de los datos
+
+
+if args.x_select is not None:
+    csv_data = csv_data[csv_data[x_axis_name[0]].isin(args.x_select)]
+
+if args.y_select is not None:
+    csv_data = csv_data[csv_data[y_axis_name[0]].isin(args.y_select)]
 
 
 chartConstructor = charts.chart_constructors.get(args.chart_type)
