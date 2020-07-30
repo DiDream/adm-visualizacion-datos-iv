@@ -126,15 +126,14 @@ class ViolinChart(ADMChart):
         fig = plt.figure()
         fig.suptitle(chart_name)
 
-        sns.violinplot(x=self.csv_data[self.x_axis_name], y=self.csv_data[self.y_axis_name])
-
+        chart = sns.violinplot(x=self.csv_data[self.x_axis_name], y=self.csv_data[self.y_axis_name])
+        chart.set_xticklabels(chart.get_xticklabels(), rotation=45, horizontalalignment='right')
         return fig
 
 
 # No es necesario --y-axis
 class HistogramChart(ADMChart):
     def generate_chart(self, chart_name):
-        sns.set()
         fig = plt.figure()
 
         fig.suptitle(chart_name)
@@ -152,11 +151,11 @@ class BoxPlotChart(ADMChart):
         self.y_axis_name = self.y_axis_name[0] if isinstance(self.y_axis_name, list) else self.y_axis_name
 
     def generate_chart(self, chart_name):
-        sns.set()
         fig = plt.figure()
         fig.suptitle(chart_name)
 
-        sns.boxplot(x=self.csv_data[self.x_axis_name], y=self.csv_data[self.y_axis_name])
+        chart = sns.boxplot(x=self.csv_data[self.x_axis_name], y=self.csv_data[self.y_axis_name])
+        chart.set_xticklabels(chart.get_xticklabels(), rotation=45, horizontalalignment='right')
         return fig
 
 
