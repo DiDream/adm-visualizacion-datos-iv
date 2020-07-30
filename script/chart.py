@@ -4,16 +4,16 @@ import seaborn as sns
 
 
 class ADMChart:
-    def __init__(self, x_axis_name, y_axis_name, csv_data):
+    def __init__(self, x_axis_name, y_axis_name, data):
         self.x_axis_name = x_axis_name if len(x_axis_name) > 1 else x_axis_name[0]
         self.y_axis_name = y_axis_name if len(y_axis_name) > 1 else y_axis_name[0]
-        self.csv_data = csv_data
+        self.data = data
 
     def get_axis_size(self):
         if isinstance(self.x_axis_name, list):
             return len(self.x_axis_name)
         else:
-            return len(self.csv_data[self.x_axis_name])
+            return len(self.data[self.x_axis_name])
 
     def generate_chart(self, chart_name):
         x_axis_size = self.get_axis_size()
@@ -48,16 +48,16 @@ class ADMChart:
 class LineChart(ADMChart):
     def set_type_chart(self, axes):
         if isinstance(self.x_axis_name, list):
-            for index, row in self.csv_data.iterrows():
+            for index, row in self.data.iterrows():
                 axes.plot(row[self.x_axis_name], label=row[self.y_axis_name])
         elif isinstance(self.y_axis_name, list):
             axes.set_xlabel(self.x_axis_name)
             for name in self.y_axis_name:
-                axes.plot(self.csv_data[self.x_axis_name], self.csv_data[name], label=name)
+                axes.plot(self.data[self.x_axis_name], self.data[name], label=name)
         else:
             axes.set_xlabel(self.x_axis_name)
             axes.set_ylabel(self.y_axis_name)
-            axes.plot(self.csv_data[self.x_axis_name], self.csv_data[self.y_axis_name])
+            axes.plot(self.data[self.x_axis_name], self.data[self.y_axis_name])
 
 
 class BarChart(ADMChart):
@@ -65,12 +65,12 @@ class BarChart(ADMChart):
     def set_type_chart(self, axes):
         if isinstance(self.x_axis_name, list):
             x_axis_range = np.arange(len(self.x_axis_name))
-            series_number = len(self.csv_data)
+            series_number = len(self.data)
             axes.margins(x=0)
             padding = 0.05
             bar_width = (1 - padding) / series_number
 
-            for index, row in self.csv_data.iterrows():
+            for index, row in self.data.iterrows():
                 axes.bar(
                     (x_axis_range - (0.5 - (padding / 2)) + (bar_width / 2)) + (index * bar_width),
                     row[self.x_axis_name],
@@ -81,7 +81,7 @@ class BarChart(ADMChart):
 
         elif isinstance(self.y_axis_name, list):
             axes.set_xlabel(self.x_axis_name)
-            x_axis = self.csv_data[self.x_axis_name]
+            x_axis = self.data[self.x_axis_name]
 
             x_axis_range = np.arange(len(x_axis))
             series_number = len(self.y_axis_name)
@@ -93,7 +93,7 @@ class BarChart(ADMChart):
                 name = self.y_axis_name[index]
                 axes.bar(
                     (x_axis_range - (0.5 - (padding / 2)) + (bar_width / 2)) + (index * bar_width),
-                    self.csv_data[name],
+                    self.data[name],
                     label=name,
                     width=bar_width
                 )
@@ -101,24 +101,24 @@ class BarChart(ADMChart):
         else:
             axes.set_xlabel(self.x_axis_name)
             axes.set_ylabel(self.y_axis_name)
-            axes.bar(self.csv_data[self.x_axis_name], self.csv_data[self.y_axis_name])
+            axes.bar(self.data[self.x_axis_name], self.data[self.y_axis_name])
 
 
 class ScatterChart(ADMChart):
-    def __init__(self, x_axis_name, y_axis_name, csv_data):
-        super().__init__(x_axis_name, y_axis_name, csv_data)
+    def __init__(self, x_axis_name, y_axis_name, data):
+        super().__init__(x_axis_name, y_axis_name, data)
         self.x_axis_name = self.x_axis_name[0] if isinstance(self.x_axis_name, list) else self.x_axis_name
         self.y_axis_name = self.y_axis_name[0] if isinstance(self.y_axis_name, list) else self.y_axis_name
 
     def set_type_chart(self, axes):
         axes.set_xlabel(self.x_axis_name)
         axes.set_ylabel(self.y_axis_name)
-        axes.scatter(self.csv_data[self.x_axis_name], self.csv_data[self.y_axis_name])
+        axes.scatter(self.data[self.x_axis_name], self.data[self.y_axis_name])
 
 
 class ViolinChart(ADMChart):
-    def __init__(self, x_axis_name, y_axis_name, csv_data):
-        super().__init__(x_axis_name, y_axis_name, csv_data)
+    def __init__(self, x_axis_name, y_axis_name, data):
+        super().__init__(x_axis_name, y_axis_name, data)
         self.x_axis_name = self.x_axis_name[0] if isinstance(self.x_axis_name, list) else self.x_axis_name
         self.y_axis_name = self.y_axis_name[0] if isinstance(self.y_axis_name, list) else self.y_axis_name
 
@@ -126,7 +126,7 @@ class ViolinChart(ADMChart):
         fig = plt.figure()
         fig.suptitle(chart_name)
 
-        chart = sns.violinplot(x=self.csv_data[self.x_axis_name], y=self.csv_data[self.y_axis_name])
+        chart = sns.violinplot(x=self.data[self.x_axis_name], y=self.data[self.y_axis_name])
         chart.set_xticklabels(chart.get_xticklabels(), rotation=45, horizontalalignment='right')
         return fig
 
@@ -139,14 +139,14 @@ class HistogramChart(ADMChart):
         fig.suptitle(chart_name)
 
         # Disable Kernel density estimation -> https://stackoverflow.com/a/57802471
-        sns.distplot(self.csv_data[self.x_axis_name], kde=False, norm_hist=False)
+        sns.distplot(self.data[self.x_axis_name], kde=False, norm_hist=False)
 
         return fig
 
 
 class BoxPlotChart(ADMChart):
-    def __init__(self, x_axis_name, y_axis_name, csv_data):
-        super().__init__(x_axis_name, y_axis_name, csv_data)
+    def __init__(self, x_axis_name, y_axis_name, data):
+        super().__init__(x_axis_name, y_axis_name, data)
         self.x_axis_name = self.x_axis_name[0] if isinstance(self.x_axis_name, list) else self.x_axis_name
         self.y_axis_name = self.y_axis_name[0] if isinstance(self.y_axis_name, list) else self.y_axis_name
 
@@ -154,7 +154,7 @@ class BoxPlotChart(ADMChart):
         fig = plt.figure()
         fig.suptitle(chart_name)
 
-        chart = sns.boxplot(x=self.csv_data[self.x_axis_name], y=self.csv_data[self.y_axis_name])
+        chart = sns.boxplot(x=self.data[self.x_axis_name], y=self.data[self.y_axis_name])
         chart.set_xticklabels(chart.get_xticklabels(), rotation=45, horizontalalignment='right')
         return fig
 

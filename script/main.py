@@ -66,7 +66,7 @@ else:
     sys.exit(1)
 
 try:
-    csv_data = data_source.get_data()
+    data = data_source.get_data()
 except FileNotFoundError:
     print('No se ha encontrado el fichero especificado', file=sys.stderr, end='')
     sys.exit(1)
@@ -83,13 +83,13 @@ if len(x_axis_name) > 1 and len(y_axis_name) > 1:
     sys.exit(1)
 
 for name in x_axis_name:
-    if name not in csv_data.columns:
-        print('Seleccione un valor del listado para X axis:', csv_data.columns.to_list(), file=sys.stderr, end='')
+    if name not in data.columns:
+        print('Seleccione un valor del listado para X axis:', data.columns.to_list(), file=sys.stderr, end='')
         sys.exit(1)
 
 for name in y_axis_name:
-    if name not in csv_data.columns:
-        print('Seleccione un valor del listado para Y axis:', csv_data.columns.to_list(), file=sys.stderr, end='')
+    if name not in data.columns:
+        print('Seleccione un valor del listado para Y axis:', data.columns.to_list(), file=sys.stderr, end='')
         sys.exit(1)
 
 
@@ -104,35 +104,35 @@ elif args.chart_type == 'line' or args.chart_type == 'bar':
         group_by = y_axis_name[0]
 
 if group_by is not None:
-    csv_data = group_by_functions[args.group_by_func](csv_data.groupby(group_by, as_index=False))
+    data = group_by_functions[args.group_by_func](data.groupby(group_by, as_index=False))
 
 # END Agrupación de los datos
 
-
+# BEGIN select specific values
 if args.x_select is not None:
-    csv_data = csv_data[csv_data[x_axis_name[0]].isin(args.x_select)]
+    data = data[data[x_axis_name[0]].isin(args.x_select)]
 
 if args.y_select is not None:
-    csv_data = csv_data[csv_data[y_axis_name[0]].isin(args.y_select)]
+    data = data[data[y_axis_name[0]].isin(args.y_select)]
+# END select specific values
 
-
-chartConstructor = charts.chart_constructors.get(args.chart_type)
-chart = chartConstructor(x_axis_name, y_axis_name, csv_data)
-chartImage = chart.generate_chart(args.chart_name)
+chart_constructor = charts.chart_constructors.get(args.chart_type)
+chart = chart_constructor(x_axis_name, y_axis_name, data)
+chart_image = chart.generate_chart(args.chart_name)
 
 if args.as_json:
-    imageFile = BytesIO()
-    chartImage.savefig(imageFile, format='png', bbox_inches='tight')
-    imageFile.seek(0)
+    image_file = BytesIO()
+    chart_image.savefig(image_file, format='png', bbox_inches='tight')
+    image_file.seek(0)
 
     result = {
-        'imageBase64': base64.b64encode(imageFile.getvalue()).decode('utf8'),
-        'sourceData': json.loads(csv_data.to_json(orient='table'))
+        'imageBase64': base64.b64encode(image_file.getvalue()).decode('utf8'),
+        'sourceData': json.loads(data.to_json(orient='table'))
     }
     print(json.dumps(result), end='')
 
 else:
     # Renderiza la imagen al completo (bbox_inches='tight') -> https://stackoverflow.com/a/39089653
-    chartImage.savefig(args.chart_file_name, bbox_inches='tight')
+    chart_image.savefig(args.chart_file_name, bbox_inches='tight')
 
 
