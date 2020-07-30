@@ -42,8 +42,8 @@
             <div class="form-group form-group-axis x-axis">
                 <label for="">Eje X</label>
                 <nb-select multiple fullWidth placeholder="Eje X" formControlName="xAxis">
-                    <nb-option *ngFor="let csvField of csvFields" [value]="csvField">
-                        {{ csvField }}
+                    <nb-option *ngFor="let field of fields" [value]="field">
+                        {{ field }}
                     </nb-option>
                 </nb-select>
             </div>
@@ -52,8 +52,8 @@
             <div class="form-group form-group-axis y-axis">
                 <label for="">Eje Y</label>
                 <nb-select multiple fullWidth placeholder="Eje Y" formControlName="yAxis">
-                    <nb-option *ngFor="let csvField of csvFields" [value]="csvField">
-                        {{ csvField }}
+                    <nb-option *ngFor="let field of fields" [value]="field">
+                        {{ field }}
                     </nb-option>
                 </nb-select>
             </div>
@@ -70,8 +70,8 @@
             <label for="">Agrupar por</label>
             <nb-select fullWidth placeholder="Campo de agrupación" formControlName="groupBy">
                 <nb-option [value]="null">No seleccionado</nb-option>
-                <nb-option *ngFor="let csvField of csvFields" [value]="csvField">
-                    {{ csvField }}
+                <nb-option *ngFor="let field of fields" [value]="field">
+                    {{ field }}
                 </nb-option>
             </nb-select>
         </div>

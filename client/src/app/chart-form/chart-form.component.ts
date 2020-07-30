@@ -17,7 +17,7 @@ export class ChartFormComponent {
     public formArguments: FormGroup;
 
     public data: any;
-    public csvFields: string[] = [];
+    public fields: string[] = [];
 
     public loadingData: boolean = false;
     public loadingChart: boolean = false;
@@ -157,15 +157,34 @@ export class ChartFormComponent {
         };
     }
 
-    private parseData(data: string) {
-        const csvData = papaparse.parse(data, {header: true, delimiter: ',', skipEmptyLines: true});
-        this.data = csvData;
-        this.csvFields = csvData.meta.fields;
+    private parseData(dataString: string) {
+        let data: {[key: string]: any}[] = [], fields: string[] = [];
+        try {
+            const jsonData = JSON.parse(dataString);
+            fields = Object.keys(jsonData);
+            const numberRows = jsonData[fields[0]].length;
+            data = [];
+
+            for (let i = 0; i < numberRows; i++) {
+                data.push(fields.reduce((dataRow, field) => {
+                    dataRow[field] = jsonData[field][i];
+                    return dataRow;
+                }, {}))
+            }
+        }
+        catch (e) {
+            const csvData = papaparse.parse(dataString, {header: true, delimiter: ',', skipEmptyLines: true});
+            data = csvData.data;
+            fields = csvData.meta.fields
+        }
+
+        this.data = data;
+        this.fields = fields;
 
         this.formArguments.reset(this.formArgumentsInitialValues);
         this.getData.emit({
-            headers: this.csvFields,
-            rows: csvData.data as any
+            headers: fields,
+            rows: data as any
         });
     }
 }

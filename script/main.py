@@ -95,7 +95,6 @@ for name in y_axis_name:
 
 # BEGIN Agrupación de los datos
 group_by = None
-
 if args.chart_type == 'scatter':
     group_by = args.group_by
 elif args.chart_type == 'line' or args.chart_type == 'bar':
@@ -105,8 +104,8 @@ elif args.chart_type == 'line' or args.chart_type == 'bar':
 
 if group_by is not None:
     data = group_by_functions[args.group_by_func](data.groupby(group_by, as_index=False))
-
 # END Agrupación de los datos
+
 
 # BEGIN select specific values
 if args.x_select is not None:
@@ -115,6 +114,7 @@ if args.x_select is not None:
 if args.y_select is not None:
     data = data[data[y_axis_name[0]].isin(args.y_select)]
 # END select specific values
+
 
 chart_constructor = charts.chart_constructors.get(args.chart_type)
 chart = chart_constructor(x_axis_name, y_axis_name, data)
