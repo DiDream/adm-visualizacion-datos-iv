@@ -39,20 +39,20 @@ export class ChartService {
     ) { }
 
     public async getChart(chartArguments: IChartArguments) {
+        const programArguments = [
+            this.configService.get('SCRIPT_PATH'),
+            '--as-json',
+            '--x-axis', ...chartArguments.xAxis,
+            '--y-axis', ...chartArguments.yAxis,
+            '--chart-type', chartArguments.chartType,
+            ...(chartArguments.url ? ['--data', chartArguments.url] : []),
+            ...(chartArguments.groupByFunction ? ['--group-by-func', chartArguments.groupByFunction] : []),
+            ...(chartArguments.groupBy ? ['--group-by', chartArguments.groupBy] : []),
+            ...(chartArguments.xSelect ? ['--x-select', ...chartArguments.xSelect ] : []),
+            ...(chartArguments.ySelect ? ['--y-select', ...chartArguments.ySelect ] : []),
+        ];
+
         return new Promise((resolve, reject) => {
-            const programArguments = [
-                this.configService.get('SCRIPT_PATH'),
-                '--as-json',
-                '--x-axis', ...chartArguments.xAxis,
-                '--y-axis', ...chartArguments.yAxis,
-                '--chart-type', chartArguments.chartType,
-                ...(chartArguments.url ? ['--data', chartArguments.url] : []),
-                ...(chartArguments.groupByFunction ? ['--group-by-func', chartArguments.groupByFunction] : []),
-                ...(chartArguments.groupBy ? ['--group-by', chartArguments.groupBy] : []),
-                ...(chartArguments.xSelect ? ['--x-select', ...chartArguments.xSelect ] : []),
-                ...(chartArguments.ySelect ? ['--y-select', ...chartArguments.ySelect ] : []),
-            ];
-            console.log(`Program arguments ${Date.now()}:`, programArguments.join(' '));
             const chartGenerator = spawn(this.configService.get('PYTHON_COMMAND') || 'python3', programArguments);
 
             if (chartArguments.dataBase64) {
@@ -89,6 +89,11 @@ export class ChartService {
             chartGenerator.on('error', (err) => {
                 reject(err);
             });
+        })
+        .catch(err => {
+            console.log(`Program arguments ${new Date().toISOString()}:`, programArguments.join(' '));
+            console.log(`Program error:`, err);
+            throw err;
         })
 
     }
