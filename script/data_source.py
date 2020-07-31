@@ -28,3 +28,10 @@ class UrlDataSource(DataSource):
 class StdinDataSource(DataSource):
     def __init__(self, stdin_read):
         super().__init__(StringIO(stdin_read))
+
+    def get_data(self):
+        try:
+            return pandas.read_json(self.data)
+        except ValueError:
+            self.data.seek(0)
+            return pandas.read_csv(self.data)
