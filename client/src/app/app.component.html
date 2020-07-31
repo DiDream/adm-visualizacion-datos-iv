@@ -1,5 +1,5 @@
 <nb-layout>
-    <nb-sidebar [containerFixed]="false" class="chart-form-container">
+    <nb-sidebar class="chart-form-container">
         <app-chart-form
             (getChart)="tabsetRef.selectTab(tabChartRef); chartRef.renderChart($event)"
             (getData)="tabsetRef.selectTab(tabDataRef); chartData.renderData($event)"

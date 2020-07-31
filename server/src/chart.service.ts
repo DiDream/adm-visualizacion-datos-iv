@@ -48,8 +48,8 @@ export class ChartService {
             ...(chartArguments.url ? ['--data', chartArguments.url] : []),
             ...(chartArguments.groupByFunction ? ['--group-by-func', chartArguments.groupByFunction] : []),
             ...(chartArguments.groupBy ? ['--group-by', chartArguments.groupBy] : []),
-            ...(chartArguments.xSelect ? ['--x-select', ...chartArguments.xSelect ] : []),
-            ...(chartArguments.ySelect ? ['--y-select', ...chartArguments.ySelect ] : []),
+            ...(Array.isArray(chartArguments.xSelect) && chartArguments.xSelect.length > 0 ? ['--x-select', ...chartArguments.xSelect ] : []),
+            ...(Array.isArray(chartArguments.ySelect) && chartArguments.ySelect.length > 0 ? ['--y-select', ...chartArguments.ySelect ] : []),
         ];
 
         return new Promise((resolve, reject) => {

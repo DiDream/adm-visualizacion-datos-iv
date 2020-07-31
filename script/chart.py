@@ -18,8 +18,8 @@ class ADMChart:
     def generate_chart(self, chart_name):
         x_axis_size = self.get_axis_size()
         figure_width = x_axis_size * 0.15
-        if figure_width < 15:
-            figure_width = 15
+        if figure_width < 5:
+            figure_width = 5
         elif figure_width > 25:
             figure_width = 25
 
@@ -114,6 +114,9 @@ class ScatterChart(ADMChart):
         axes.set_xlabel(self.x_axis_name)
         axes.set_ylabel(self.y_axis_name)
         axes.scatter(self.data[self.x_axis_name], self.data[self.y_axis_name])
+
+    def get_axis_size(self):
+        return 5/0.15
 
 
 class ViolinChart(ADMChart):

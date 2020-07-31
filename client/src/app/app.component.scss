@@ -1,9 +1,10 @@
-.chart-form-container {
-    width: 25%;
-    min-width: 250px;
-    ::ng-deep {
-        .main-container {
-            width: auto;
-        }
+nb-sidebar.chart-form-container {
+    &, ::ng-deep .main-container.main-container-fixed {
+            width: 25%;
+            min-width: 250px;
+    }
+
+    ::ng-deep .main-container.main-container-fixed {
+        top: 0 !important;
     }
 }

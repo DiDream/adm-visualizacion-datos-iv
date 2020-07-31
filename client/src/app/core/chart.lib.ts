@@ -55,7 +55,7 @@ export abstract class ADMChart {
         })
     }
 
-    private generateRandomColor(): string {
+    protected generateRandomColor(): string {
         return "#" + ((1 << 24) * Math.random() | 0).toString(16);
     }
 }
@@ -88,7 +88,8 @@ export class ScatterChart extends ADMChart {
                                 x: row[xAxisName],
                                 y: row[yAxisName]
                             }
-                        })
+                        }),
+                        backgroundColor: this.generateRandomColor()
                     }
                 ]
             },

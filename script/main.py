@@ -29,13 +29,13 @@ parser.add_argument('--y-axis', help='Chart Y axis', nargs='+', type=str, requir
 parser.add_argument(
     '--x-select',
     help='x axis data values ​​selected for rendering',
-    nargs='+',
+    nargs='*',
     type=str
 )
 parser.add_argument(
     '--y-select',
     help='y axis data values ​​selected for rendering',
-    nargs='+',
+    nargs='*',
     type=str
 )
 parser.add_argument('--data', help='Url or path of file with data. Only formats csv and json')

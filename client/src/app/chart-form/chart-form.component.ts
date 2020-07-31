@@ -63,15 +63,15 @@ export class ChartFormComponent {
 
         this.formArgumentsInitialValues = this.formArguments.value;
 
-        const groupByControl = this.formArguments.get('groupBy');
         const { 
             xAxis: xAxisControl,
             yAxis: yAxisControl,
             xSelect: xSelectControl,
-            ySelect: ySelectControl
+            ySelect: ySelectControl,
+            groupBy: groupByControl
         } = this.formArguments.controls;
 
-        xAxisControl.valueChanges.subscribe(value => {
+        const xAxisControlValueChangesHandler = value => {
             if (value.length == 1) {
                 xSelectControl.enable({ emitEvent: false });
                 const [xName] = value
@@ -90,7 +90,8 @@ export class ChartFormComponent {
             }
 
             yAxisControlValueChangesHandler(yAxisControl.value);
-        });
+        };
+        xAxisControl.valueChanges.subscribe(xAxisControlValueChangesHandler);
 
         const yAxisControlValueChangesHandler = (value) => {
             if (value.length == 1 && !xSelectControl.enabled) {
@@ -125,7 +126,8 @@ export class ChartFormComponent {
                 }
             }
             else if (chartType == ChartTypeEnum.SCATTER){
-                groupByControl.enable({emitEvent: false})
+                groupByControl.enable({emitEvent: false});
+                groupByControl.setValue(null, { emitEvent: false });
             }
 
             this.argumentsChange.emit(values);
