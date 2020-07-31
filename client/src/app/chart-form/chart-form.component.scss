@@ -12,3 +12,17 @@
         color: white;
     }
 }
+
+nb-select.select-cleanable {
+    position: relative;
+    .select-cleaner {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+    nb-select-label {
+        padding-left: 1rem;
+    }
+}

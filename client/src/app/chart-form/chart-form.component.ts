@@ -35,6 +35,9 @@ export class ChartFormComponent {
 
     private formArgumentsInitialValues: any;
 
+
+    public ySelectOptions: string[] = [];
+    public xSelectOptions: string[] = [];
     constructor(
         private fb: FormBuilder,
         private readonly dataService: DataService,
@@ -53,12 +56,60 @@ export class ChartFormComponent {
             yAxis: [ [], Validators.required ],
             chartType: [ ChartTypeEnum.LINE, Validators.required ],
             groupByFunction: [ GroupByFunctionEnum.SUM ],
-            groupBy: [null]
+            groupBy: [null],
+            xSelect: [[]],
+            ySelect: [[]]
         });
 
         this.formArgumentsInitialValues = this.formArguments.value;
 
         const groupByControl = this.formArguments.get('groupBy');
+        const { 
+            xAxis: xAxisControl,
+            yAxis: yAxisControl,
+            xSelect: xSelectControl,
+            ySelect: ySelectControl
+        } = this.formArguments.controls;
+
+        xAxisControl.valueChanges.subscribe(value => {
+            if (value.length == 1) {
+                xSelectControl.enable({ emitEvent: false });
+                const [xName] = value
+                const options = new Set<string>();
+                this.data.forEach(row => options.add( row[xName] ) );
+                this.xSelectOptions = Array.from(options);
+
+                // Para evitar Can't assign single value if select is marked as multiple
+                // y para esperar que las opciones se rendericen primero
+                setTimeout(() => {
+                    xSelectControl.setValue(this.xSelectOptions, { emitEvent: false });
+                }, 0)
+            }
+            else {
+                xSelectControl.disable({ emitEvent: false });
+            }
+
+            yAxisControlValueChangesHandler(yAxisControl.value);
+        });
+
+        const yAxisControlValueChangesHandler = (value) => {
+            if (value.length == 1 && !xSelectControl.enabled) {
+                ySelectControl.enable({ emitEvent: false });
+                const [xName] = value
+                const options = new Set<string>();
+                this.data.forEach(row => options.add( row[xName] ) );
+                this.ySelectOptions = Array.from(options);
+
+                setTimeout(() => {
+                    ySelectControl.setValue(this.ySelectOptions, { emitEvent: false });
+                }, 0)
+            }
+            else {
+                ySelectControl.disable({ emitEvent: false });
+            }
+        }
+        yAxisControl.valueChanges.subscribe(yAxisControlValueChangesHandler);
+
         this.formArguments.valueChanges.subscribe(values => {
             const { chartType, xAxis, yAxis } = values;
             if (chartType == ChartTypeEnum.LINE || chartType == ChartTypeEnum.BAR) {
@@ -66,14 +117,14 @@ export class ChartFormComponent {
 
                 if (Array.isArray(xAxis) && xAxis.length > 1) {
                     if (yAxis) {
-                        groupByControl.setValue(yAxis[0], { emitEvent: false })
+                        groupByControl.setValue(yAxis[0], { emitEvent: false });
                     }
                 }
                 else if (xAxis.length == 1) {
-                    groupByControl.setValue(xAxis[0], { emitEvent: false })
+                    groupByControl.setValue(xAxis[0], { emitEvent: false });
                 }
             }
-            else if (chartType == ChartTypeEnum.SCATTER ){
+            else if (chartType == ChartTypeEnum.SCATTER){
                 groupByControl.enable({emitEvent: false})
             }
 

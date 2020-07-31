@@ -67,7 +67,9 @@ export interface IChartArguments {
     chartType: string,
     url: string,
     xAxis: string[],
+    xSelect: string[],
     yAxis: string[],
+    ySelect: string[],
     groupByFunction: string,
     dataBase64: {
         filename: string,

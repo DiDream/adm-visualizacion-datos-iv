@@ -5,7 +5,9 @@ import { ConfigService } from '@nestjs/config';
 export interface IChartArguments {
     url: string,
     xAxis: string[],
+    xSelect: string[],
     yAxis: string[],
+    ySelect: string[],
     chartType: string,
     groupByFunction: string,
     groupBy: string,
@@ -38,7 +40,7 @@ export class ChartService {
 
     public async getChart(chartArguments: IChartArguments) {
         return new Promise((resolve, reject) => {
-            const chartGenerator = spawn(this.configService.get('PYTHON_COMMAND') || 'python3', [
+            const programArguments = [
                 this.configService.get('SCRIPT_PATH'),
                 '--as-json',
                 '--x-axis', ...chartArguments.xAxis,
@@ -46,8 +48,12 @@ export class ChartService {
                 '--chart-type', chartArguments.chartType,
                 ...(chartArguments.url ? ['--data', chartArguments.url] : []),
                 ...(chartArguments.groupByFunction ? ['--group-by-func', chartArguments.groupByFunction] : []),
-                ...(chartArguments.groupBy ? ['--group-by', chartArguments.groupBy] : [])
-            ]);
+                ...(chartArguments.groupBy ? ['--group-by', chartArguments.groupBy] : []),
+                ...(chartArguments.xSelect ? ['--x-select', ...chartArguments.xSelect ] : []),
+                ...(chartArguments.ySelect ? ['--y-select', ...chartArguments.ySelect ] : []),
+            ];
+            console.log(`Program arguments ${Date.now()}:`, programArguments.join(' '));
+            const chartGenerator = spawn(this.configService.get('PYTHON_COMMAND') || 'python3', programArguments);
 
             if (chartArguments.dataBase64) {
                 const buffer = Buffer.from(chartArguments.dataBase64.value, 'base64');

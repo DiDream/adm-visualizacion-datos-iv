@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ChartViewComponent } from './chart-view/chart-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule, NbLayoutModule, NbInputModule, NbButtonModule, NbSelectModule, NbSidebarModule, NbTabsetModule, NbSpinnerModule, NbCardModule, NbToastrModule } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbInputModule, NbButtonModule, NbSelectModule, NbSidebarModule, NbTabsetModule, NbSpinnerModule, NbCardModule, NbToastrModule, NbIconModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChartFormComponent } from './chart-form/chart-form.component';
@@ -32,6 +32,7 @@ import { ChartDataComponent, SelectedByAxisDirective } from './chart-data/chart-
     NbThemeModule.forRoot({ name: 'default' }),
     NbLayoutModule,
     NbEvaIconsModule,
+    NbIconModule,
     NbInputModule,
     NbButtonModule,
     NbSelectModule,
