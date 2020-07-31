@@ -127,7 +127,6 @@ export class ChartFormComponent {
             }
             else if (chartType == ChartTypeEnum.SCATTER){
                 groupByControl.enable({emitEvent: false});
-                groupByControl.setValue(null, { emitEvent: false });
             }
 
             this.argumentsChange.emit(values);

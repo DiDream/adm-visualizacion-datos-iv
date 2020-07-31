@@ -79,7 +79,7 @@ x_axis_name = args.x_axis
 y_axis_name = args.y_axis
 
 if len(x_axis_name) > 1 and len(y_axis_name) > 1:
-    print('Sólo puede especificar múltiples campos para un eje')
+    print('Sólo puede especificar múltiples campos para un eje', file=sys.stderr, end='')
     sys.exit(1)
 
 for name in x_axis_name:
