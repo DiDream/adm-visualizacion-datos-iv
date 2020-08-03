@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser(
 )
 
 parser.add_argument('--x-axis', help='Chart X axis', nargs='+', type=str, required=True)
-parser.add_argument('--y-axis', help='Chart Y axis', nargs='+', type=str, required=True)
+parser.add_argument('--y-axis', help='Chart Y axis', nargs='*', type=str, default=[])
 parser.add_argument(
     '--x-select',
     help='x axis data values ​​selected for rendering',
@@ -47,6 +47,9 @@ parser.add_argument('--group-by', help='Print result as json')
 parser.add_argument('--group-by-func', help='Grouping function', choices=list(group_by_functions.keys()), default="sum")
 
 args = parser.parse_args()
+if args.chart_type != 'histogram' and args.y_axis is None:
+    print('Debe especificar al menos un campo asociado al eje Y', file=sys.stderr, end='')
+    sys.exit(1)
 
 if args.chart_file_name is None:
     args.chart_file_name = args.chart_name

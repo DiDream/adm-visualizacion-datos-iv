@@ -68,9 +68,17 @@ export class ChartFormComponent {
             yAxis: yAxisControl,
             xSelect: xSelectControl,
             ySelect: ySelectControl,
-            groupBy: groupByControl
+            groupBy: groupByControl,
+            chartType: chartTypeControl,
         } = this.formArguments.controls;
-
+        chartTypeControl.valueChanges.subscribe(chartType => {
+            if (chartType == ChartTypeEnum.HISTOGRAM) {
+                yAxisControl.disable({emitEvent: false});
+            }
+            else {
+                yAxisControl.enable({emitEvent: false});
+            }
+        })
         const xAxisControlValueChangesHandler = value => {
             if (value.length == 1) {
                 xSelectControl.enable({ emitEvent: false });

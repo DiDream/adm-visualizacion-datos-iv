@@ -18,7 +18,9 @@ export class SelectedByAxisDirective {
     public set chartArguments(chartArguments: IChartArguments) {
         if (chartArguments) {
             this.xAxisSelected = chartArguments.xAxis.some(axisName => axisName == this.selectedByAxis);
-            this.yAxisSelected = chartArguments.yAxis.some(axisName => axisName == this.selectedByAxis);
+            if (chartArguments.yAxis) {
+                this.yAxisSelected = chartArguments.yAxis.some(axisName => axisName == this.selectedByAxis);
+            }
         }
     }
 }

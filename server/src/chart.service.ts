@@ -43,7 +43,7 @@ export class ChartService {
             this.configService.get('SCRIPT_PATH'),
             '--as-json',
             '--x-axis', ...chartArguments.xAxis,
-            '--y-axis', ...chartArguments.yAxis,
+            ...(chartArguments.yAxis ? ['--y-axis', ...chartArguments.yAxis] : []),
             '--chart-type', chartArguments.chartType,
             ...(chartArguments.url ? ['--data', chartArguments.url] : []),
             ...(chartArguments.groupByFunction ? ['--group-by-func', chartArguments.groupByFunction] : []),

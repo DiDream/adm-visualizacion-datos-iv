@@ -28,10 +28,10 @@ export class ChartViewComponent {
 
         // Initialize chart with chart.js
         const { chartType } = chartArguments;
-        
         if (this.chart) {
             this.chart.clear();
             this.chart.destroy();
+            this.chart = null;
         }
 
         if (chartType in ChartConstructors) {

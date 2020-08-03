@@ -136,6 +136,10 @@ class ViolinChart(ADMChart):
 
 # No es necesario --y-axis
 class HistogramChart(ADMChart):
+    def __init__(self, x_axis_name, y_axis_name, data):
+        y_axis_name = [None]
+        super().__init__(x_axis_name, y_axis_name, data)
+
     def generate_chart(self, chart_name):
         fig = plt.figure()
 

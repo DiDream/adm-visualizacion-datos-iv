@@ -7,6 +7,9 @@ export enum ChartTypeEnum {
     LINE = 'line',
     BAR = 'bar',
     SCATTER = 'scatter',
+    VIOLIN = 'violin',
+    HISTOGRAM = 'histogram',
+    BOX = 'box',
 }
 
 export const CHART_TYPES: {key: ChartTypeEnum, label: string}[] = [
@@ -21,7 +24,19 @@ export const CHART_TYPES: {key: ChartTypeEnum, label: string}[] = [
     {
         key: ChartTypeEnum.SCATTER,
         label: 'Dispersión'
-    }
+    },
+    {
+        key: ChartTypeEnum.VIOLIN,
+        label: 'Violin',
+    },
+    {
+        key: ChartTypeEnum.HISTOGRAM,
+        label: 'Histograma',
+    },
+    {
+        key: ChartTypeEnum.BOX,
+        label: 'Cajas y bigotes',
+    },
 ];
 
 export enum GroupByFunctionEnum {
