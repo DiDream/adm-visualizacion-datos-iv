@@ -1,15 +1,22 @@
 .form-group-axis {
-    padding: .5rem;
-    border-radius: 5px;
-    
     &.x-axis {
-        background-color: #3366ff;
-        color: white;
+        nb-select ::ng-deep {
+            button.select-button:not(:disabled) {
+                background-color: #3366ff;
+                color: white;
+                font-weight: 600;
+            }
+        }
     }
 
     &.y-axis {
-        background-color: #ff3d71;
-        color: white;
+        nb-select ::ng-deep {
+            button.select-button:not(:disabled) {
+                background-color: #ff3d71;
+                color: white;
+                font-weight: 600;
+            }
+        }
     }
 }
 
