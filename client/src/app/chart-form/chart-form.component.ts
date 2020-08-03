@@ -86,12 +86,6 @@ export class ChartFormComponent {
                 const options = new Set<string>();
                 this.data.forEach(row => options.add( row[xName] ) );
                 this.xSelectOptions = Array.from(options);
-
-                // Para evitar Can't assign single value if select is marked as multiple
-                // y para esperar que las opciones se rendericen primero
-                setTimeout(() => {
-                    xSelectControl.setValue(this.xSelectOptions, { emitEvent: false });
-                }, 0)
             }
             else {
                 xSelectControl.disable({ emitEvent: false });
@@ -108,10 +102,6 @@ export class ChartFormComponent {
                 const options = new Set<string>();
                 this.data.forEach(row => options.add( row[xName] ) );
                 this.ySelectOptions = Array.from(options);
-
-                setTimeout(() => {
-                    ySelectControl.setValue(this.ySelectOptions, { emitEvent: false });
-                }, 0)
             }
             else {
                 ySelectControl.disable({ emitEvent: false });

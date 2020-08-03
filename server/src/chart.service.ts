@@ -27,7 +27,8 @@ export interface IChartOutput {
             pandas_version: string,
             primaryKey: string[]
         }
-    }
+    },
+    commandArguments: string
 }
 
 const UTF_8 = 'utf-8';
@@ -40,7 +41,6 @@ export class ChartService {
 
     public async getChart(chartArguments: IChartArguments) {
         const programArguments = [
-            this.configService.get('SCRIPT_PATH'),
             '--as-json',
             '--x-axis', ...chartArguments.xAxis,
             ...(chartArguments.yAxis ? ['--y-axis', ...chartArguments.yAxis] : []),
@@ -52,8 +52,13 @@ export class ChartService {
             ...(Array.isArray(chartArguments.ySelect) && chartArguments.ySelect.length > 0 ? ['--y-select', ...chartArguments.ySelect ] : []),
         ];
 
+        const commandArguments = programArguments.join(' ');
+
         return new Promise((resolve, reject) => {
-            const chartGenerator = spawn(this.configService.get('PYTHON_COMMAND') || 'python3', programArguments);
+            const chartGenerator = spawn(this.configService.get('PYTHON_COMMAND') || 'python3', [
+                this.configService.get('SCRIPT_PATH'),
+                ...programArguments
+            ]);
 
             if (chartArguments.dataBase64) {
                 const buffer = Buffer.from(chartArguments.dataBase64.value, 'base64');
@@ -74,7 +79,8 @@ export class ChartService {
                     return reject(new Error(errorBuffer || 'Error durante la ejecución del script'));
                 }
                 try {
-                    const dataResult: IChartOutput = JSON.parse(dataResultBuffer)
+                    const dataResult: IChartOutput = JSON.parse(dataResultBuffer);
+                    dataResult.commandArguments = commandArguments;
                     resolve(dataResult);
                 }
                 catch (err) {
@@ -91,7 +97,7 @@ export class ChartService {
             });
         })
         .catch(err => {
-            console.log(`Program arguments ${new Date().toISOString()}:`, programArguments.join(' '));
+            console.log(`Program arguments ${new Date().toISOString()}:`, commandArguments);
             console.log(`Program error:`, err);
             throw err;
         })

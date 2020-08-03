@@ -1,4 +1,9 @@
 
+<nb-alert *ngIf="commandArguments" status="info" class="mt-4">
+    <code>
+> python main.py {{commandArguments}}
+    </code>
+</nb-alert>
 <nb-tabset fullWidth>
     <nb-tab tabTitle="Chart.js">
         <app-chart-data #chartData></app-chart-data>

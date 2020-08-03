@@ -14,7 +14,7 @@ export class ChartViewComponent {
     public chartBase64: string;
 
     public data: any;
-    public csvFields: string[] = [];
+    public commandArguments: string;
 
     private chart: Chart;
     private chartContext: CanvasRenderingContext2D;
@@ -25,6 +25,7 @@ export class ChartViewComponent {
 
     public renderChart({response, chartArguments}: {response: {data: IChartOutput}, chartArguments: IChartArguments}) {
         this.chartBase64 = `${this.base64Prefix}${response.data.imageBase64}`;
+        this.commandArguments = response.data.commandArguments;
 
         // Initialize chart with chart.js
         const { chartType } = chartArguments;

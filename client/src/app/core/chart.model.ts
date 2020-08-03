@@ -102,5 +102,6 @@ export interface IChartOutput {
             pandas_version: string,
             primaryKey: string[]
         }
-    }
+    },
+    commandArguments: string,
 }
