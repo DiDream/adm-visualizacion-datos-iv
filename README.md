@@ -1,6 +1,30 @@
 # Visualización de Datos II
 Puede acceder a la demo de la aplicación en **[http://edu.ajmonfue.me/adm-3/](http://edu.ajmonfue.me/adm-3/)**
 
+## Tabla de contenido
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+  - [Enunciados](#enunciados)
+    - [1. Para el framework de visualización desarrrollado en la práctica anterior, incorpora las modificaciones planteadas por el profesor durante la sesión de evaluación.](#1-para-el-framework-de-visualizaci%C3%B3n-desarrrollado-en-la-pr%C3%A1ctica-anterior-incorpora-las-modificaciones-planteadas-por-el-profesor-durante-la-sesi%C3%B3n-de-evaluaci%C3%B3n)
+      - [Añadir campo al formulario del cliente para indicar la columna de agrupación, útil para las gráficas de dispersión.](#a%C3%B1adir-campo-al-formulario-del-cliente-para-indicar-la-columna-de-agrupaci%C3%B3n-%C3%BAtil-para-las-gr%C3%A1ficas-de-dispersi%C3%B3n)
+      - [Añadir otros formatos de las fuentes de datos a representar, por ejemplo `.json`.](#a%C3%B1adir-otros-formatos-de-las-fuentes-de-datos-a-representar-por-ejemplo-json)
+      - [Permitir filtrar valores de los ejes](#permitir-filtrar-valores-de-los-ejes)
+    - [2. Analiza y familiarízate con la librería Seaborn.](#2-analiza-y-familiar%C3%ADzate-con-la-librer%C3%ADa-seaborn)
+    - [3. Incorpora al framework que has desarrollado la posibilidad de generar diagramas que permitan mostrar distribuciones de datos: histogramas, correlogramas, boxplots, curvas de densidad, diagramas de violín...](#3-incorpora-al-framework-que-has-desarrollado-la-posibilidad-de-generar-diagramas-que-permitan-mostrar-distribuciones-de-datos-histogramas-correlogramas-boxplots-curvas-de-densidad-diagramas-de-viol%C3%ADn)
+      - [Violin](#violin)
+      - [Cajas y bigotes](#cajas-y-bigotes)
+      - [Histograma con diagrama de densidad](#histograma-con-diagrama-de-densidad)
+    - [4. Con los conjuntos de datos considerados en las prácticas anteriores desarrolla el tratamiento que permita conocer la distribución de datos y extraer información relativa a comportamientos realizando comparativas de algunas variables: edad, país, género, periodos, ...](#4-con-los-conjuntos-de-datos-considerados-en-las-pr%C3%A1cticas-anteriores-desarrolla-el-tratamiento-que-permita-conocer-la-distribuci%C3%B3n-de-datos-y-extraer-informaci%C3%B3n-relativa-a-comportamientos-realizando-comparativas-de-algunas-variables-edad-pa%C3%ADs-g%C3%A9nero-periodos-)
+      - [Coronavirus](#coronavirus)
+      - [Conjunto de datos para supermercados gourmet](#conjunto-de-datos-para-supermercados-gourmet)
+    - [5. Haciendo uso del componente "servidor" desarrollado en la asignatura Computación en la Nube, convierte en un servicio el framework desarrollado. Para poder acceder a este servicio, deberías desarrollar asimismo un cliente específico que permita al usuario seleccionar el origen de los datos que van a ser representados y que en el servidor se realicen las representaciones que serán mostradas por el cliente. Describe en una página la arquitectura software de la aplicación y las tecnologías desarrolladas.](#5-haciendo-uso-del-componente-servidor-desarrollado-en-la-asignatura-computaci%C3%B3n-en-la-nube-convierte-en-un-servicio-el-framework-desarrollado-para-poder-acceder-a-este-servicio-deber%C3%ADas-desarrollar-asimismo-un-cliente-espec%C3%ADfico-que-permita-al-usuario-seleccionar-el-origen-de-los-datos-que-van-a-ser-representados-y-que-en-el-servidor-se-realicen-las-representaciones-que-ser%C3%A1n-mostradas-por-el-cliente-describe-en-una-p%C3%A1gina-la-arquitectura-software-de-la-aplicaci%C3%B3n-y-las-tecnolog%C3%ADas-desarrolladas)
+    - [6. Piensa en un nombre y en algún tipo de aplicación para la que pueda desarrollarse el Framework desarrollado.](#6-piensa-en-un-nombre-y-en-alg%C3%BAn-tipo-de-aplicaci%C3%B3n-para-la-que-pueda-desarrollarse-el-framework-desarrollado)
+- [Futuras mejoras](#futuras-mejoras)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Enunciados
 ### 1. Para el framework de visualización desarrrollado en la práctica anterior, incorpora las modificaciones planteadas por el profesor durante la sesión de evaluación.
 
