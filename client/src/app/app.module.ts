@@ -12,6 +12,9 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChartFormComponent } from './chart-form/chart-form.component';
 import { ChartDataComponent, SelectedByAxisDirective } from './chart-data/chart-data.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -42,6 +45,9 @@ import { ChartDataComponent, SelectedByAxisDirective } from './chart-data/chart-
     NbCardModule,
     NbToastrModule.forRoot(),
     NbAlertModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -7,3 +7,12 @@
     background-color: #ff3d71;
     color: white;
 }
+
+.data-table {
+    width: 100%;
+    ::ng-deep {
+        th.mat-header-cell, td.mat-cell {
+            padding: 0.5rem;
+        }
+    }
+}

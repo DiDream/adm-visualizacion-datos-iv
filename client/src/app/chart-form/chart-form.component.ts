@@ -96,7 +96,7 @@ export class ChartFormComponent {
         xAxisControl.valueChanges.subscribe(xAxisControlValueChangesHandler);
 
         const yAxisControlValueChangesHandler = (value) => {
-            if (value.length == 1 && !xSelectControl.enabled && ySelectControl.enabled) {
+            if (value.length == 1 && !xSelectControl.enabled && yAxisControl.enabled) {
                 ySelectControl.enable({ emitEvent: false });
                 const [xName] = value
                 const options = new Set<string>();

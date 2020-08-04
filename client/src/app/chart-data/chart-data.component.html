@@ -1,16 +1,14 @@
-<table *ngIf="data">
-    <thead>
-        <tr>
-            <th *ngFor="let header of data.headers" [selectedByAxis]="header" [chartArguments]="arguments">
-                {{ header }}
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let row of data.rows">
-            <td *ngFor="let header of data.headers" [selectedByAxis]="header" [chartArguments]="arguments">
-                {{ row[header] }}
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div [hidden]="dataSource.data.length == 0">
+
+    <table class="data-table" mat-table matSort [dataSource]="dataSource">
+        
+        <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{ column }}">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [selectedByAxis]="column" [chartArguments]="arguments">{{ column }}</th>
+            <td mat-cell *matCellDef="let element" [selectedByAxis]="column" [chartArguments]="arguments"> {{element[column]}} </td>
+        </ng-container>
+        
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[25, 50, 100, 200]" showFirstLastButtons></mat-paginator>
+</div>
