@@ -94,14 +94,24 @@ Comando:
 |---|
 | ![Gráfica de cajas y bigotes](assets/images/chart-box.png) |
 
+#### Histograma con diagrama de densidad
+**Datos**: https://www.kaggle.com/acostasg/gourmet-supermarkets?select=analisis_data_o_hora_del_dia.csv
+
+Comando (Los datos se pasan por la entrada estándar):
+```
+> python main.py --x-axis HORA --chart-type histogram --group-by-func sum < analisis_data_o_hora_del_dia.csv
+```
+
+| *Gráfica de histograma con [KDE](https://en.wikipedia.org/wiki/Kernel_density_estimation)* |
+|---|
+| ![Gráfica de histograma con KDE](assets/images/chart-histogram.png) |
 
 
 # Futuras mejoras
 * Permitir especificar las dimensiones de la gráfica de matplotlib.
 * Permitir descargar imágenes de las graficas.
 * Visualización en pantalla completa.
-* Mejora de la tabla de datos (Permitir ordenar, realizar búsquedas)
-* Sincronizar los valores de ejes seleccionados en la tabla. Señalar sólo aquellos selecciondos.
+* Sincronizar los valores de ejes seleccionados en la tabla. Señalar sólo aquellos seleccionados.
 * Utilizar seaborn para las gráficas de líneas, scatter, y barras.
 * Crear las gráficas con chart.js en el cliente, análogas a las creadas con seaborn.
 * Permitir compartir links con los argumentos necesarios como query strings

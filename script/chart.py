@@ -146,7 +146,7 @@ class HistogramChart(ADMChart):
         fig.suptitle(chart_name)
 
         # Disable Kernel density estimation -> https://stackoverflow.com/a/57802471
-        sns.distplot(self.data[self.x_axis_name], kde=False, norm_hist=False)
+        sns.distplot(self.data[self.x_axis_name], kde=True)
 
         return fig
 

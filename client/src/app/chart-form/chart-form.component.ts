@@ -197,6 +197,7 @@ export class ChartFormComponent {
         const readerCsv = new FileReader();
         const file = event.target.files[0];
 
+        event.target.value = '';
         readerText.readAsText(file);
         readerCsv.readAsDataURL(file);
 
