@@ -23,16 +23,13 @@ Se añade la importación de datos en formato `json` con la siguiente estructura
     "Country_Region": [
         "US",
         "Spain",
-        "Mexico",
-        ...
+        "Mexico"
     ],
     "Confirmed": [
         100,
         200,
-        300,
-        ...
+        300
     ],
-    ...
 }
 ```
 
