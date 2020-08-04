@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import numpy as np
 import seaborn as sns
 
 
@@ -15,13 +14,18 @@ class ADMChart:
         else:
             return len(self.data[self.x_axis_name])
 
-    def generate_chart(self, chart_name):
+    def get_figure_width(self):
         x_axis_size = self.get_axis_size()
         figure_width = x_axis_size * 0.15
         if figure_width < 5:
             figure_width = 5
         elif figure_width > 25:
             figure_width = 25
+        return figure_width
+
+    def generate_chart(self, chart_name):
+        x_axis_size = self.get_axis_size()
+        figure_width = self.get_figure_width()
 
         chart = plt.figure(figsize=(figure_width, 5))
 
@@ -62,46 +66,27 @@ class LineChart(ADMChart):
 
 class BarChart(ADMChart):
 
-    def set_type_chart(self, axes):
+    def generate_chart(self, chart_name):
+        figure_width = self.get_figure_width()
+        fig = plt.figure(figsize=(figure_width, 5))
+        fig.suptitle(chart_name)
+
+        # https://stackoverflow.com/a/49505519
         if isinstance(self.x_axis_name, list):
-            x_axis_range = np.arange(len(self.x_axis_name))
-            series_number = len(self.data)
-            axes.margins(x=0)
-            padding = 0.05
-            bar_width = (1 - padding) / series_number
-
-            for index, row in self.data.iterrows():
-                axes.bar(
-                    (x_axis_range - (0.5 - (padding / 2)) + (bar_width / 2)) + (index * bar_width),
-                    row[self.x_axis_name],
-                    label=row[self.y_axis_name],
-                    width=bar_width
-                )
-            plt.xticks(x_axis_range, self.x_axis_name)
-
+            data = self.data.melt(self.y_axis_name, value_vars=self.x_axis_name, var_name='__a', value_name='__b')
+            ax = sns.barplot(x='__a', y='__b', hue=self.y_axis_name, data=data)
+            ax.set_ylabel('')
+            ax.set_xlabel('')
         elif isinstance(self.y_axis_name, list):
-            axes.set_xlabel(self.x_axis_name)
-            x_axis = self.data[self.x_axis_name]
-
-            x_axis_range = np.arange(len(x_axis))
-            series_number = len(self.y_axis_name)
-            axes.margins(x=0)
-            padding = 0.05
-            bar_width = (1 - padding) / series_number
-
-            for index in range(len(self.y_axis_name)):
-                name = self.y_axis_name[index]
-                axes.bar(
-                    (x_axis_range - (0.5 - (padding / 2)) + (bar_width / 2)) + (index * bar_width),
-                    self.data[name],
-                    label=name,
-                    width=bar_width
-                )
-            plt.xticks(x_axis_range, x_axis)
+            data = self.data.melt(self.x_axis_name, value_vars=self.y_axis_name, var_name='__a', value_name='__b')
+            ax = sns.barplot(x=self.x_axis_name, y='__b', hue='__a', data=data)
+            ax.legend().set_title('')
+            ax.set_ylabel('')
         else:
-            axes.set_xlabel(self.x_axis_name)
-            axes.set_ylabel(self.y_axis_name)
-            axes.bar(self.data[self.x_axis_name], self.data[self.y_axis_name])
+            ax = sns.barplot(x=self.x_axis_name, y=self.y_axis_name, data=self.data)
+
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=90, fontsize=8.5)
+        return fig
 
 
 class ScatterChart(ADMChart):
@@ -129,8 +114,8 @@ class ViolinChart(ADMChart):
         fig = plt.figure()
         fig.suptitle(chart_name)
 
-        chart = sns.violinplot(x=self.data[self.x_axis_name], y=self.data[self.y_axis_name])
-        chart.set_xticklabels(chart.get_xticklabels(), rotation=45, horizontalalignment='right')
+        ax = sns.violinplot(x=self.data[self.x_axis_name], y=self.data[self.y_axis_name])
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
         return fig
 
 
@@ -161,8 +146,8 @@ class BoxPlotChart(ADMChart):
         fig = plt.figure()
         fig.suptitle(chart_name)
 
-        chart = sns.boxplot(x=self.data[self.x_axis_name], y=self.data[self.y_axis_name])
-        chart.set_xticklabels(chart.get_xticklabels(), rotation=45, horizontalalignment='right')
+        ax = sns.boxplot(x=self.data[self.x_axis_name], y=self.data[self.y_axis_name])
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
         return fig
 
 
