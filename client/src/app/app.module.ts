@@ -17,40 +17,40 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ChartFormComponent,
-    ChartViewComponent,
-    ChartDataComponent,
-    SelectedByAxisDirective
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
+    declarations: [
+        AppComponent,
+        ChartFormComponent,
+        ChartViewComponent,
+        ChartDataComponent,
+        SelectedByAxisDirective
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
 
 
-    NbThemeModule.forRoot({ name: 'default' }),
-    NbLayoutModule,
-    NbEvaIconsModule,
-    NbIconModule,
-    NbInputModule,
-    NbButtonModule,
-    NbSelectModule,
-    NbSidebarModule.forRoot(),
-    NbTabsetModule,
-    NbSpinnerModule,
-    NbCardModule,
-    NbToastrModule.forRoot(),
-    NbAlertModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    NbCheckboxModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+        NbThemeModule.forRoot({ name: 'default' }),
+        NbLayoutModule,
+        NbEvaIconsModule,
+        NbIconModule,
+        NbInputModule,
+        NbButtonModule,
+        NbSelectModule,
+        NbSidebarModule.forRoot(),
+        NbTabsetModule,
+        NbSpinnerModule,
+        NbCardModule,
+        NbToastrModule.forRoot(),
+        NbAlertModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        NbCheckboxModule,
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
