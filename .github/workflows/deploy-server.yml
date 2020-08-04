@@ -3,7 +3,10 @@ name: Build and deploy server to GKE
 on:
   push:
     branches:
-    - master
+      - master
+    paths:
+      - 'server/**'
+      - 'script/**'
 
 env:
   # Datos GKE

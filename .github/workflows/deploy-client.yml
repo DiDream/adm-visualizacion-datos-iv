@@ -3,7 +3,9 @@ name: Build and deploy client to GKE
 on:
   push:
     branches:
-    - master
+      - master
+    paths:
+      - 'client/**'
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
