@@ -158,10 +158,17 @@ Por otra parte, se han añadido nuevos tipos de gráficos, por lo que el diagram
 |:--:| 
 | *Jerarquía de clases de gráficas* |
 
+### 6. Piensa en un nombre y en algún tipo de aplicación para la que pueda desarrollarse el Framework desarrollado.
+La idea de la aplicación en la que se podría desarrollar este framework consiste en el almacenamiento y representación de datos. Mas concretamente, la aplicación tendría, por un parte, la funcionalidad de almacenar datos, algo parecido a [kaggle](https://www.kaggle.com/), pero con el valor añadido que dichos datos pueden se representados en gráficas que el usuario decida. Como es lógico la aplicación tendría que implementar la gestión de usuarios (registro, autenticación, autorización...).
+
+Por otra parte, las gráficas del usuario podrían ser compartidas, mediante `iframe` por ejemplo, de forma que otros sitios web podrían incorporarlos. Sobre dicha compartición se podría implementar un modelo de negocio, puesto que las gráficas podrían ser públicas o estar sujetas a una especie de pago o suscripción para acceder a ellas, según el criterio del usuario.
+
+Por último, como nombre de aplicación he pensado `iochart`.
+
 # Futuras mejoras
 * Permitir especificar las dimensiones de la gráfica de matplotlib.
 * Permitir descargar imágenes de las graficas.
-* Visualización en pantalla completa.
+* Visualización de gráficas en pantalla completa.
 * Sincronizar los valores de ejes seleccionados en la tabla. Señalar sólo aquellos seleccionados.
 * Utilizar seaborn para las gráficas de líneas, scatter, y barras.
 * Crear las gráficas con chart.js en el cliente, análogas a las creadas con seaborn.
