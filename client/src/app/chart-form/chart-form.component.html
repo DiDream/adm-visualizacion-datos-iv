@@ -60,19 +60,14 @@
                     </div>
                     
                     <div class="col-xl-6">
-                        <nb-select multiple fullWidth placeholder="Valores seleccionados" formControlName="xSelect" #xSelectRef class="select-cleanable">
-                            <nb-select-label *ngIf="xSelectRef.selected.length">
-                                <button nbButton ghost size="small" (click)="$event.stopPropagation(); formArguments.get('xSelect').setValue([])" class="select-cleaner">
-                                    <nb-icon icon="close-outline"></nb-icon>
-                                </button>
-                                <span>
-                                    {{ xSelectRef.selectionView }}
-                                </span>
-                            </nb-select-label>
-                            <nb-option *ngFor="let selectOption of xSelectOptions" [value]="selectOption">
-                                {{ selectOption }}
-                            </nb-option>
-                        </nb-select>
+                        <div class="select-container has-checkbox">
+                            <nb-checkbox [disabled]="formArguments.get('xSelect').disabled" (click)="$event.stopPropagation();" class="select-checkbox" status="basic" (checkedChange)="onToggleSelections($event, 'xSelect', xSelectOptions)"></nb-checkbox>
+                            <nb-select multiple fullWidth placeholder="Valores seleccionados" formControlName="xSelect" #xSelectRef>
+                                <nb-option *ngFor="let selectOption of xSelectOptions" [value]="selectOption">
+                                    {{ selectOption }}
+                                </nb-option>
+                            </nb-select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -89,20 +84,15 @@
                         </nb-select>
                     </div>
                     <div class="col-xl-6">
-                        <nb-select multiple fullWidth placeholder="Valores seleccionados" formControlName="ySelect" #ySelectRef class="select-cleanable">
-                            <nb-select-label *ngIf="ySelectRef.selected.length">
-                                <button nbButton ghost size="small" (click)="$event.stopPropagation(); formArguments.get('ySelect').setValue([])" class="select-cleaner">
-                                    <nb-icon icon="close-outline"></nb-icon>
-                                </button>
-                                <span>
-                                    {{ ySelectRef.selectionView }}
-                                </span>
-                            </nb-select-label>
-
-                            <nb-option *ngFor="let selectOption of ySelectOptions" [value]="selectOption">
-                                {{ selectOption }}
-                            </nb-option>
-                        </nb-select>
+                        <div class="select-container has-checkbox">
+                            <nb-checkbox [disabled]="formArguments.get('ySelect').disabled" (click)="$event.stopPropagation();" class="select-checkbox" status="basic" (checkedChange)="onToggleSelections($event, 'ySelect', ySelectOptions)"></nb-checkbox>
+                            <nb-select multiple fullWidth placeholder="Valores seleccionados" formControlName="ySelect" #ySelectRef class="has-checkbox">
+    
+                                <nb-option *ngFor="let selectOption of ySelectOptions" [value]="selectOption">
+                                    {{ selectOption }}
+                                </nb-option>
+                            </nb-select>
+                        </div>
                     </div>
                 </div>
                 

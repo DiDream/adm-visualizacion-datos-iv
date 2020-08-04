@@ -18,18 +18,25 @@
             }
         }
     }
+
+    ::ng-deep {
+        nb-icon {
+            color: inherit !important;
+        }
+    }
 }
 
-nb-select.select-cleanable {
+.select-container.has-checkbox {
     position: relative;
-    .select-cleaner {
+    .select-checkbox {
         position: absolute;
-        left: 0;
+        left: 0.75rem;
         top: 50%;
         transform: translateY(-50%);
         z-index: 1;
+        height: 20px;
     }
-    nb-select-label {
-        padding-left: 1rem;
+    nb-select ::ng-deep .select-button {
+        padding-left: 2.5rem;
     }
 }

@@ -246,4 +246,10 @@ export class ChartFormComponent {
             rows: data as any
         });
     }
+
+    public onToggleSelections(value, selectControlName, posibleOptions) {
+        const selectControl = this.formArguments.get(selectControlName);
+
+        selectControl.setValue(value ? posibleOptions : []);
+    }
 }
