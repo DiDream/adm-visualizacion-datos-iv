@@ -68,7 +68,7 @@ Seaborn es una librería de visualización de datos para Python, desarrollada so
 * https://www.analyticslane.com/2018/07/20/visualizacion-de-datos-con-seaborn/#:~:text=Seaborn%20es%20una%20librer%C3%ADa%20para,defecto%20en%20la%20distribuci%C3%B3n%20Anaconda
 
 ### 3. Incorpora al framework que has desarrollado la posibilidad de generar diagramas que permitan mostrar distribuciones de datos: histogramas, correlogramas, boxplots, curvas de densidad, diagramas de violín...
-Se han incoporado los siguientes tipos de gráficos:
+Mediante el uso de `seaborn`, en el script en python, se han incorporado los siguientes tipos de gráficas. En la parte del cliente se podrá seleccionar y representar estos tipos de gráficas, sin embargo, por falta de tiempo, no se ha implementado la correspondiente representación en Chart.js, por lo que sólo estarán disponibles los generados por el script en python.
 
 #### Violin
 **Datos**: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/08-02-2020.csv
@@ -144,6 +144,19 @@ Del conjunto de datos indicado, se pretende analizar qué individuos realizan, e
 
 Como se puede ver en la gráfica, las empresas son las que realizan compras con un importe total más elevado, y los hombres con un importe total menor.
 
+### 5. Haciendo uso del componente "servidor" desarrollado en la asignatura Computación en la Nube, convierte en un servicio el framework desarrollado. Para poder acceder a este servicio, deberías desarrollar asimismo un cliente específico que permita al usuario seleccionar el origen de los datos que van a ser representados y que en el servidor se realicen las representaciones que serán mostradas por el cliente. Describe en una página la arquitectura software de la aplicación y las tecnologías desarrolladas.
+
+La arquitectura de la aplicación no ha cambiado con respecto a la última entrega, salvo por la incorporación de la librería `seaborn` al script en python, por lo que teniendo esto en cuenta la arquitectura quedaría de la siguiente forma:
+
+| ![Arquitectura de aplicación](assets/images/architecture.png) | 
+|:--:| 
+| *Arquitectura de aplicación* |
+
+Por otra parte, se han añadido nuevos tipos de gráficos, por lo que el diagrama de clases de gráficas quedaría así:
+
+| ![Jerarquía de clases de gráficas](assets/images/chart-class-hierarchy.png) | 
+|:--:| 
+| *Jerarquía de clases de gráficas* |
 
 # Futuras mejoras
 * Permitir especificar las dimensiones de la gráfica de matplotlib.
