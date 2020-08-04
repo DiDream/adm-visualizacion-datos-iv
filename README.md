@@ -95,7 +95,10 @@ Comando:
 | ![Gráfica de cajas y bigotes](assets/images/chart-box.png) |
 
 #### Histograma con diagrama de densidad
-**Datos**: https://www.kaggle.com/acostasg/gourmet-supermarkets?select=analisis_data_o_hora_del_dia.csv
+**Fuente original de los datos**: https://www.kaggle.com/acostasg/gourmet-supermarkets?select=analisis_data_o_hora_del_dia.csv
+**Fichero**: [assets/data/analisis_data_o_hora_del_dia.csv](assets/data/analisis_data_o_hora_del_dia.csv)
+
+Los datos del fichero difieren de la fuente original en que la primera columna, originalmente, era una cadena vacía, lo cual ocasionaba un error en el cliente, por ello se ha renombrado a `ID`.
 
 Comando (Los datos se pasan por la entrada estándar):
 ```
@@ -105,6 +108,41 @@ Comando (Los datos se pasan por la entrada estándar):
 | *Gráfica de histograma con [KDE](https://en.wikipedia.org/wiki/Kernel_density_estimation)* |
 |---|
 | ![Gráfica de histograma con KDE](assets/images/chart-histogram.png) |
+
+### 4. Con los conjuntos de datos considerados en las prácticas anteriores desarrolla el tratamiento que permita conocer la distribución de datos y extraer información relativa a comportamientos realizando comparativas de algunas variables: edad, país, género, periodos, ...
+
+#### Coronavirus
+**Datos**: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
+
+Se pretende analizar y comparar la evolución de casos confirmados de Covid-19 en los países España, Francia, Alemania e Italia entre el rango de fechas desde 28/06/2020 hasta 02/08/2020 cada 7 días. Para ello se ha utilizado la siguiente gráfica de líneas.
+
+| *Evolución de Covid-19* |
+|---|
+| ![Evolución de Covid-19](assets/images/chart-confirmed-coronavirus.png) |
+
+```bash
+> python main.py --x-axis 7/12/20 7/19/20 7/26/20 8/2/20 --y-axis Country/Region --chart-type line --data https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv --group-by-func sum --y-select Spain France Germany Italy
+```
+
+Como se puede ver, todos los paises de la gráfica tienen un aumento de casos confirmados por Covid-19 en este intervalo de tiempo, sin embargo, dicho incremento en España es bastante superior al resto de paises, cuyo crecimiento se ha acelerado en esta últimas dos semanas.
+
+
+#### Conjunto de datos para supermercados gourmet
+**Fuente original de los datos**: https://www.kaggle.com/acostasg/gourmet-supermarkets?select=analisis_data_o_hora_del_dia.csv
+**Fichero**: [assets/data/analisis_data_o_hora_del_dia.csv](assets/data/analisis_data_o_hora_del_dia.csv)
+
+Del conjunto de datos indicado, se pretende analizar qué individuos realizan, en general, compras con un importe total más elevado que el resto, y quiénes con un importe menor; de entre mujeres, hombres y empresas (columna `sexo` de los datos). Para ello se va a utilizar una gráfica de violin.
+
+| *Importe total de compras por sexo y empresa* |
+|---|
+| ![Importe total de compras por sexo y empresa](assets/images/study-chart-violin.png) |
+
+
+```bash
+> python main.py --x-axis SEXO --y-axis IMPORTETOTAL --chart-type violin --group-by-func sum < analisis_data_o_hora_del_dia.csv
+```
+
+Como se puede ver en la gráfica, las empresas son las que realizan compras con un importe total más elevado, y los hombres con un importe total menor.
 
 
 # Futuras mejoras
