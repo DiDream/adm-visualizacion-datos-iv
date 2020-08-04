@@ -63,6 +63,39 @@ Se permite filtrar valores de uno de los ejes, según el siguiente criterio:
 |---|---|
 | ![Formulario de gráfica con campos filtrados (eje Y)](assets/images/form-filtered-y.png) | ![Gráfica con campos filtrados (eje Y)](assets/images/chart-filtered-y.png) |
 
+### 2. Analiza y familiarízate con la librería Seaborn.
+Seaborn es una librería de visualización de datos para Python, desarrollada sobre matplotlib, que permite generar fácilmente elegantes gráficos. Como introducción, se ha seguido el siguiente artículo:
+* https://www.analyticslane.com/2018/07/20/visualizacion-de-datos-con-seaborn/#:~:text=Seaborn%20es%20una%20librer%C3%ADa%20para,defecto%20en%20la%20distribuci%C3%B3n%20Anaconda
+
+### 3. Incorpora al framework que has desarrollado la posibilidad de generar diagramas que permitan mostrar distribuciones de datos: histogramas, correlogramas, boxplots, curvas de densidad, diagramas de violín...
+Se han incoporado los siguientes tipos de gráficos:
+
+#### Violin
+**Datos**: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/08-02-2020.csv
+
+Comando:
+```
+> python main.py --x-axis Country_Region --y-axis Confirmed --chart-type violin --data https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/08-02-2020.csv --group-by-func sum --x-select Italy Spain Germany France
+```
+
+| *Gráfica de violin* |
+|---|
+| ![Gráfica de violin](assets/images/chart-violin.png) |
+
+#### Cajas y bigotes
+**Datos**: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/08-02-2020.csv
+
+Comando:
+```
+> python main.py --x-axis Country_Region --y-axis Confirmed --chart-type box --data https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/08-02-2020.csv --group-by-func sum --x-select Italy Spain Germany France
+```
+
+| *Gráfica de cajas y bigotes* |
+|---|
+| ![Gráfica de cajas y bigotes](assets/images/chart-box.png) |
+
+
+
 # Futuras mejoras
 * Permitir especificar las dimensiones de la gráfica de matplotlib.
 * Permitir descargar imágenes de las graficas.

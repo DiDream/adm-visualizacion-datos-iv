@@ -96,7 +96,7 @@ export class ChartFormComponent {
         xAxisControl.valueChanges.subscribe(xAxisControlValueChangesHandler);
 
         const yAxisControlValueChangesHandler = (value) => {
-            if (value.length == 1 && !xSelectControl.enabled) {
+            if (value.length == 1 && !xSelectControl.enabled && ySelectControl.enabled) {
                 ySelectControl.enable({ emitEvent: false });
                 const [xName] = value
                 const options = new Set<string>();
@@ -147,7 +147,12 @@ export class ChartFormComponent {
                     this.formSourceData.get('dataBase64').setValue(null);
                 },
                 err => {
-                    this.toastrService.show(err.message || 'Error desconocido', 'Error al obtener los datos', {status: 'danger', duration: 4000, destroyByClick: true})
+                    console.log('Error:', err.message);
+                    const message = err.message ?
+                    `${err.message.slice(0, 100)}...\n
+                    Más información en la consola` :
+                    'Error desconocido';
+                    this.toastrService.show(message, 'Error al obtener los datos', {status: 'danger', duration: 4000, destroyByClick: true})
                 }
             );
         
@@ -175,7 +180,11 @@ export class ChartFormComponent {
                 },
                 (err: {error: string, message: string, statusCode: number}) => {
                     console.log('Error:', err.message);
-                    this.toastrService.show(err.message || 'Error desconocido', 'Error al obtener el gráfico', {status: 'danger', duration: 4000, destroyByClick: true})
+                    const message = err.message ? 
+                    `${err.message.slice(0, 100)}...\n
+                    Más información en la consola` :
+                    'Error desconocido';
+                    this.toastrService.show(message, 'Error al obtener el gráfico', {status: 'danger', duration: 4000, destroyByClick: true})
                 }
             )
 

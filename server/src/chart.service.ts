@@ -41,7 +41,6 @@ export class ChartService {
 
     public async getChart(chartArguments: IChartArguments) {
         const programArguments = [
-            '--as-json',
             '--x-axis', ...chartArguments.xAxis,
             ...(chartArguments.yAxis ? ['--y-axis', ...chartArguments.yAxis] : []),
             '--chart-type', chartArguments.chartType,
@@ -57,7 +56,8 @@ export class ChartService {
         return new Promise((resolve, reject) => {
             const chartGenerator = spawn(this.configService.get('PYTHON_COMMAND') || 'python3', [
                 this.configService.get('SCRIPT_PATH'),
-                ...programArguments
+                ...programArguments,
+                '--as-json',
             ]);
 
             if (chartArguments.dataBase64) {
