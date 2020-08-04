@@ -7,7 +7,7 @@
 
 ```bash
 $ python3 main.py --help
-usage: main.py [-h] --x-axis X_AXIS [X_AXIS ...] --y-axis Y_AXIS [Y_AXIS ...] [--x-select [X_SELECT [X_SELECT ...]]]
+usage: main.py [-h] --x-axis X_AXIS [X_AXIS ...] [--y-axis [Y_AXIS [Y_AXIS ...]]] [--x-select [X_SELECT [X_SELECT ...]]]
                [--y-select [Y_SELECT [Y_SELECT ...]]] [--data DATA] [--chart-type {bar,line,scatter,violin,histogram,box}]
                [--chart-name CHART_NAME] [--chart-file-name CHART_FILE_NAME] [--as-json] [--group-by GROUP_BY]
                [--group-by-func {sum,max,min,prod,first,last}]
@@ -15,7 +15,7 @@ usage: main.py [-h] --x-axis X_AXIS [X_AXIS ...] --y-axis Y_AXIS [Y_AXIS ...] [-
 optional arguments:
   -h, --help                                            show this help message and exit
   --x-axis X_AXIS [X_AXIS ...]                          Chart X axis
-  --y-axis Y_AXIS [Y_AXIS ...]                          Chart Y axis
+  --y-axis [Y_AXIS [Y_AXIS ...]]                        Chart Y axis
   --x-select [X_SELECT [X_SELECT ...]]                  x axis data values ​​selected for rendering
   --y-select [Y_SELECT [Y_SELECT ...]]                  y axis data values ​​selected for rendering
   --data DATA                                           Url or path of file with data. Only formats csv and json
