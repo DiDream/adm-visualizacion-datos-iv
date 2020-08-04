@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: adm-server
-  namespace: adm-3
+  namespace: adm-4
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /api/$2
     # SOLUTION: Kubernetes - 413 Request Entity Too Large -> https://imti.co/413-request-entity-too-large/#:~:text=The%20%E2%80%9C413%20Request%20Entity%20Too,adjust%20in%20the%20Nginx%20configuration.
@@ -11,7 +11,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /adm-3/api(/|$)(.*)
+      - path: /adm-4/api(/|$)(.*)
         backend:
           serviceName: adm-server
           servicePort: 3000

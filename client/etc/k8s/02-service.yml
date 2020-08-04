@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: adm-client
-  namespace: adm-3
+  namespace: adm-4
   labels:
     app: adm-client
 spec:
