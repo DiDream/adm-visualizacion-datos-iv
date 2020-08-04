@@ -5,6 +5,8 @@ metadata:
   namespace: adm-3
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /api/$2
+    # SOLUTION: Kubernetes - 413 Request Entity Too Large -> https://imti.co/413-request-entity-too-large/#:~:text=The%20%E2%80%9C413%20Request%20Entity%20Too,adjust%20in%20the%20Nginx%20configuration.
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
 spec:
   rules:
   - http:
