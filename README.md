@@ -37,28 +37,28 @@ Se añade la importación de datos en formato `json` con la siguiente estructura
 Se permite filtrar valores de uno de los ejes, según el siguiente criterio:
 * Se permitirá filtrar valores del `eje X`, si se selecciona sólo un campo para el `eje X`.
 
-**Datos**: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-06-2020.csv
+    **Datos**: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-06-2020.csv
 
-| *Formulario de gráfica sin campos filtrados (eje X)* | *Gráfica sin campos filtrados (eje X)* |
-|---|---|
-| ![Formulario de gráfica sin campos filtrados (eje X)](assets/images/form-no-filtered-x.png) | ![Gráfica sin campos filtrados (eje X)](assets/images/chart-no-filtered-x.png) |
+    | *Formulario de gráfica sin campos filtrados (eje X)* | *Gráfica sin campos filtrados (eje X)* |
+    |---|---|
+    | ![Formulario de gráfica sin campos filtrados (eje X)](assets/images/form-no-filtered-x.png) | ![Gráfica sin campos filtrados (eje X)](assets/images/chart-no-filtered-x.png) |
 
-| *Formulario de gráfica con campos filtrados (eje X)* | *Gráfica con campos filtrados (eje X)* |
-|---|---|
-| ![Formulario de gráfica con campos filtrados (eje X)](assets/images/form-filtered-x.png) | ![Gráfica con campos filtrados (eje X)](assets/images/chart-filtered-x.png) |
+    | *Formulario de gráfica con campos filtrados (eje X)* | *Gráfica con campos filtrados (eje X)* |
+    |---|---|
+    | ![Formulario de gráfica con campos filtrados (eje X)](assets/images/form-filtered-x.png) | ![Gráfica con campos filtrados (eje X)](assets/images/chart-filtered-x.png) |
 
 
 * Se permitirá filtrar valores del eje Y, si se selecciona múltiples valores para el `eje X` y un sólo valor para el `eje Y`.
 
-**Datos**: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-06-2020.csv
+    **Datos**: https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-06-2020.csv
 
-| *Formulario de gráfica sin campos filtrados (eje Y)* | *Gráfica sin campos filtrados (eje Y)* |
-|---|---|
-| ![Formulario de gráfica sin campos filtrados (eje Y)](assets/images/form-no-filtered-y.png) | ![Gráfica sin campos filtrados (eje Y)](assets/images/chart-no-filtered-y.png) |
+    | *Formulario de gráfica sin campos filtrados (eje Y)* | *Gráfica sin campos filtrados (eje Y)* |
+    |---|---|
+    | ![Formulario de gráfica sin campos filtrados (eje Y)](assets/images/form-no-filtered-y.png) | ![Gráfica sin campos filtrados (eje Y)](assets/images/chart-no-filtered-y.png) |
 
-| *Formulario de gráfica con campos filtrados (eje Y)* | *Gráfica con campos filtrados (eje Y)* |
-|---|---|
-| ![Formulario de gráfica con campos filtrados (eje Y)](assets/images/form-filtered-y.png) | ![Gráfica con campos filtrados (eje Y)](assets/images/chart-filtered-y.png) |
+    | *Formulario de gráfica con campos filtrados (eje Y)* | *Gráfica con campos filtrados (eje Y)* |
+    |---|---|
+    | ![Formulario de gráfica con campos filtrados (eje Y)](assets/images/form-filtered-y.png) | ![Gráfica con campos filtrados (eje Y)](assets/images/chart-filtered-y.png) |
 
 ### 2. Analiza y familiarízate con la librería Seaborn.
 Seaborn es una librería de visualización de datos para Python, desarrollada sobre matplotlib, que permite generar fácilmente elegantes gráficos. Como introducción, se ha seguido el siguiente artículo:
