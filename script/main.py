@@ -11,6 +11,21 @@ import chart as charts
 import data_source as data_sources
 import urllib
 
+
+class CustomError(Exception):
+    pass
+
+
+def my_except_hook(exctype, value, traceback):
+    if exctype == CustomError:
+        print(value, file=sys.stderr, end='')
+    else:
+        sys.__excepthook__(exctype, value, traceback)
+
+
+sys.excepthook = my_except_hook
+
+
 group_by_functions = {
     'sum': lambda series_group_by: series_group_by.sum(),
     'max': lambda series_group_by: series_group_by.max(numeric_only=True),
@@ -48,52 +63,40 @@ parser.add_argument('--group-by-func', help='Grouping function', choices=list(gr
 
 args = parser.parse_args()
 if args.chart_type != 'histogram' and args.y_axis is None:
-    print('Debe especificar al menos un campo asociado al eje Y', file=sys.stderr, end='')
-    sys.exit(1)
+    raise CustomError('Debe especificar al menos un campo asociado al eje Y')
 
 if args.chart_file_name is None:
     args.chart_file_name = args.chart_name
 
-data_source = None
-
 if args.data is not None:
-    data_source = data_sources.UrlDataSource(args.data)
+    data_source_input = data_sources.UrlDataSourceInput(args.data)
 elif not sys.stdin.isatty():
-    data_source = data_sources.StdinDataSource(sys.stdin.read())
+    data_source_input = data_sources.StdinDataSourceInput(sys.stdin.read())
 else:
-    print(
-        'Especifique el contenido de los datos mediante el argumento --data o < NOMBRE FICHERO',
-        file=sys.stderr,
-        end=''
-    )
-    sys.exit(1)
+    raise CustomError('Especifique el contenido de los datos mediante el argumento --data o < NOMBRE FICHERO')
 
 try:
+    data_source = data_sources.DataSource.get_instance(data_source_input)
     data = data_source.get_data()
 except FileNotFoundError:
-    print('No se ha encontrado el fichero especificado', file=sys.stderr, end='')
-    sys.exit(1)
+    raise CustomError('No se ha encontrado el fichero especificado')
 except urllib.error.HTTPError:
-    print('Datos no encontrados mediante URL', file=sys.stderr, end='')
-    sys.exit(1)
+    raise CustomError('Datos no encontrados mediante URL')
 
 # Se comprueba si los campos seleccionados para los ejes están presentes en el header del csv
 x_axis_name = args.x_axis
 y_axis_name = args.y_axis
 
 if len(x_axis_name) > 1 and len(y_axis_name) > 1:
-    print('Sólo puede especificar múltiples campos para un eje', file=sys.stderr, end='')
-    sys.exit(1)
+    raise CustomError('Sólo puede especificar múltiples campos para un eje')
 
 for name in x_axis_name:
     if name not in data.columns:
-        print('Seleccione un valor del listado para X axis:', data.columns.to_list(), file=sys.stderr, end='')
-        sys.exit(1)
+        raise CustomError('Seleccione un valor del listado para X axis: {}'.format(data.columns.to_list()))
 
 for name in y_axis_name:
     if name not in data.columns:
-        print('Seleccione un valor del listado para Y axis:', data.columns.to_list(), file=sys.stderr, end='')
-        sys.exit(1)
+        raise CustomError('Seleccione un valor del listado para Y axis: {}'.format(data.columns.to_list()))
 
 
 # BEGIN Agrupación de los datos

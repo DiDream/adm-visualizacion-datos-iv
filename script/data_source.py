@@ -3,18 +3,15 @@ from io import StringIO
 import ssl
 
 
-class DataSource:
+class DataSourceInput:
     def __init__(self, data):
         self.data = data
 
     def get_data(self):
-        try:
-            return pandas.read_json(self.data)
-        except ValueError:
-            return pandas.read_csv(self.data)
+        return self.data
 
 
-class UrlDataSource(DataSource):
+class UrlDataSourceInput(DataSourceInput):
     def __init__(self, url):
         # ERROR urllib.error.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED]
         #   certificate verify failed: unable to get local issuer certificate (_ssl.c:1123)
@@ -25,13 +22,43 @@ class UrlDataSource(DataSource):
         super().__init__(url)
 
 
-class StdinDataSource(DataSource):
+class StdinDataSourceInput(DataSourceInput):
     def __init__(self, stdin_read):
         super().__init__(StringIO(stdin_read))
 
     def get_data(self):
+        self.data.seek(0)
+        return self.data
+
+
+class DataSource:
+    def __init__(self, data_source_input: DataSourceInput):
+        self.data_source_input = data_source_input
+
+    @staticmethod
+    def get_instance(data_source_input: DataSourceInput):
+        data = data_source_input.get_data()
+
+        if isinstance(data_source_input, UrlDataSourceInput):
+            if data.endswith('.csv'):
+                return CsvDataSource(data_source_input)
+            elif data.endswith('.json'):
+                return JsonDataSource(data_source_input)
+
         try:
-            return pandas.read_json(self.data)
+            pandas.read_json(data)
+            return JsonDataSource(data_source_input)
         except ValueError:
-            self.data.seek(0)
-            return pandas.read_csv(self.data)
+            return CsvDataSource(data_source_input)
+
+
+class JsonDataSource(DataSource):
+    def get_data(self):
+        data = self.data_source_input.get_data()
+        return pandas.read_json(data)
+
+
+class CsvDataSource(DataSource):
+    def get_data(self):
+        data = self.data_source_input.get_data()
+        return pandas.read_csv(data)
