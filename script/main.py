@@ -62,7 +62,7 @@ parser.add_argument('--group-by', help='Print result as json')
 parser.add_argument('--group-by-func', help='Grouping function', choices=list(group_by_functions.keys()), default="sum")
 
 args = parser.parse_args()
-if args.chart_type != 'histogram' and args.y_axis is None:
+if args.chart_type != 'histogram' and args.chart_type != 'map' and args.y_axis is None:
     raise CustomError('Debe especificar al menos un campo asociado al eje Y')
 
 if args.chart_file_name is None:

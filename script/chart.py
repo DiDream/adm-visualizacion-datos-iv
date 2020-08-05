@@ -1,11 +1,13 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
+import geopandas as gpd
 
 
 class ADMChart:
     def __init__(self, x_axis_name, y_axis_name, data):
         self.x_axis_name = x_axis_name if len(x_axis_name) > 1 else x_axis_name[0]
-        self.y_axis_name = y_axis_name if len(y_axis_name) > 1 else y_axis_name[0]
+        if isinstance(y_axis_name, list) and len(y_axis_name) > 0:
+            self.y_axis_name = y_axis_name if len(y_axis_name) > 1 else y_axis_name[0]
         self.data = data
 
     def get_axis_size(self):
@@ -121,10 +123,6 @@ class ViolinChart(ADMChart):
 
 # No es necesario --y-axis
 class HistogramChart(ADMChart):
-    def __init__(self, x_axis_name, y_axis_name, data):
-        y_axis_name = [None]
-        super().__init__(x_axis_name, y_axis_name, data)
-
     def generate_chart(self, chart_name):
         fig = plt.figure()
 
@@ -151,11 +149,50 @@ class BoxPlotChart(ADMChart):
         return fig
 
 
+class MapChart(ADMChart):
+    def __init__(self, x_axis_name, y_axis_name, data):
+        super().__init__(x_axis_name, y_axis_name, data)
+        self.x_axis_name = self.x_axis_name[0] if isinstance(self.x_axis_name, list) else self.x_axis_name
+
+    # Ejemplo de http://www.geomapik.com/desarrollo-programacion-gis/mapas-con-python-geopandas-matplotlib/
+    def generate_chart(self, chart_name):
+        map_data = self.data
+
+        # Control del tamaño de la figura del mapa
+        fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+
+        # Control del encuadre (área geográfica) del mapa
+        ax.axis([-12, 5, 32, 48])
+
+        # Control del título y los ejes
+        ax.set_title('Natalidad por Provincias en España, 2018',
+                     pad=20,
+                     fontdict={'fontsize': 20, 'color': '#4873ab'})
+        ax.set_xlabel('Longitud')
+        ax.set_ylabel('Latitud')
+
+        # Añadir la leyenda separada del mapa
+        from mpl_toolkits.axes_grid1 import make_axes_locatable
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes("right", size="5%", pad=0.2)
+
+        # Generar y cargar el mapa
+        map_data.plot(column=self.x_axis_name, cmap='plasma', ax=ax, legend=True, cax=cax, zorder=5)
+
+        # Cargar un mapa base con contornos de países
+        # https://www.naturalearthdata.com/downloads/50m-physical-vectors/50m-ocean/
+        map_ocean = gpd.read_file('./assets/ne_50m_ocean.shp')
+        map_ocean.plot(ax=ax, color='#89c0e8', zorder=0)
+
+        return fig
+
+
 chart_constructors = {
     'bar': BarChart,
     'line': LineChart,
     'scatter': ScatterChart,
     'violin': ViolinChart,
     'histogram': HistogramChart,
-    'box': BoxPlotChart
+    'box': BoxPlotChart,
+    'map': MapChart
 }

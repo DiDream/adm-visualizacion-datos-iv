@@ -1,6 +1,7 @@
 import pandas as pandas
 from io import StringIO
 import ssl
+import geopandas as gpd
 
 
 class DataSourceInput:
@@ -44,7 +45,8 @@ class DataSource:
                 return CsvDataSource(data_source_input)
             elif data.endswith('.json'):
                 return JsonDataSource(data_source_input)
-
+            elif data.endswith('.geojson'):
+                return GeojsonDataSource(data_source_input)
         try:
             pandas.read_json(data)
             return JsonDataSource(data_source_input)
@@ -62,3 +64,9 @@ class CsvDataSource(DataSource):
     def get_data(self):
         data = self.data_source_input.get_data()
         return pandas.read_csv(data)
+
+
+class GeojsonDataSource(DataSource):
+    def get_data(self):
+        data = self.data_source_input.get_data()
+        return gpd.read_file(data)
