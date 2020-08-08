@@ -8,6 +8,9 @@ class LearningAlgorithm:
     def __init__(self):
         pass
 
+    def run(self):
+        pass
+
 # algoritmo de aprendizaje de supervisado de clasificación
 # NAIVE BAYES
 # https://www.youtube.com/watch?v=P930ev-eyVk&list=PLJjOveEiVE4Dk48EI7I-67PEleEC5nxc3&index=49
@@ -68,7 +71,6 @@ class DecisionTreeRegressionAlgorithm(LearningAlgorithm):
         # Columna 6 del dataset
         print('data', dataset.data)
         x = dataset.data[:, np.newaxis, 5]
-        print('x', x)
         y = dataset.target
 
         plt.scatter(x, y)
@@ -85,3 +87,27 @@ class DecisionTreeRegressionAlgorithm(LearningAlgorithm):
 # algoritmo de aprendizaje no supervisado basado en clustering
 # KMeans
 # https://www.youtube.com/watch?v=w2wzVg0owxU
+class KMeansAlgorithm(LearningAlgorithm):
+    def run(self):
+        import pandas as pd
+        from sklearn.cluster import KMeans
+
+        data = pd.read_csv('moviescs.csv')
+        x = data['cast_total_facebook_likes'].values
+        y = data['imdb_score'].values
+
+        X = np.array(list(zip(x, y)))
+
+        algorithm = KMeans(n_clusters=4)
+        algorithm = algorithm.fit(X)
+        labels = algorithm.predict(X)
+        centroids = algorithm.cluster_centers_
+        colors = ['red', 'green', 'blue', 'yellow', 'fuchsia']
+
+        assigned_colors = []
+        for row in labels:
+            assigned_colors.append(colors[row])
+
+        plt.scatter(x, y, c=assigned_colors, s=5)
+        plt.scatter(centroids[:, 0], centroids[:, 1], marker='*', zorder=10)
+        plt.show()
