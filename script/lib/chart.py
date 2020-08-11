@@ -29,7 +29,7 @@ class ADMChart:
             figure_width = 25
         return figure_width
 
-    def generate_chart(self, chart_name):
+    def generate_chart(self):
         x_axis_size = self.get_axis_size()
         figure_width = self.get_figure_width()
 
@@ -38,7 +38,6 @@ class ADMChart:
         # Ancho adaptable al contenido -> https://stackoverflow.com/a/54756766
         axes_left = 1 / figure_width
         axes = chart.add_axes([axes_left, 0.15, 0.98 - axes_left, 0.75])
-        axes.set_title(chart_name)
         axes.grid()
         axes.tick_params(axis='x', which='major', labelsize=8.5)
         axes.tick_params(axis='x', labelrotation=90)
@@ -55,7 +54,10 @@ class ADMChart:
         pass
 
     def output(self, args):
-        figure = self.generate_chart(args.chart_name)
+        figure = self.generate_chart()
+
+        if args.chart_name is not None:
+            figure.suptitle(args.chart_name)
 
         if args.as_json:
             image_file = BytesIO()
@@ -90,10 +92,9 @@ class LineChart(ADMChart):
 
 class BarChart(ADMChart):
 
-    def generate_chart(self, chart_name):
+    def generate_chart(self):
         figure_width = self.get_figure_width()
         fig = plt.figure(figsize=(figure_width, 5))
-        fig.suptitle(chart_name)
 
         # https://stackoverflow.com/a/49505519
         if isinstance(self.x_axis_name, list):
@@ -115,9 +116,7 @@ class BarChart(ADMChart):
 
 class ScatterChart(ADMChart):
     def __init__(self, x_axis_name, y_axis_name, data):
-        super().__init__(x_axis_name, y_axis_name, data)
-        self.x_axis_name = self.x_axis_name[0] if isinstance(self.x_axis_name, list) else self.x_axis_name
-        self.y_axis_name = self.y_axis_name[0] if isinstance(self.y_axis_name, list) else self.y_axis_name
+        super().__init__(x_axis_name[:1], y_axis_name[:1], data)
 
     def set_type_chart(self, axes):
         axes.set_xlabel(self.x_axis_name)
@@ -130,14 +129,10 @@ class ScatterChart(ADMChart):
 
 class ViolinChart(ADMChart):
     def __init__(self, x_axis_name, y_axis_name, data):
-        super().__init__(x_axis_name, y_axis_name, data)
-        self.x_axis_name = self.x_axis_name[0] if isinstance(self.x_axis_name, list) else self.x_axis_name
-        self.y_axis_name = self.y_axis_name[0] if isinstance(self.y_axis_name, list) else self.y_axis_name
+        super().__init__(x_axis_name[:1], y_axis_name[:1], data)
 
-    def generate_chart(self, chart_name):
+    def generate_chart(self):
         fig = plt.figure()
-        fig.suptitle(chart_name)
-
         ax = sns.violinplot(x=self.data[self.x_axis_name], y=self.data[self.y_axis_name])
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
         return fig
@@ -145,10 +140,8 @@ class ViolinChart(ADMChart):
 
 # No es necesario --y-axis
 class HistogramChart(ADMChart):
-    def generate_chart(self, chart_name):
+    def generate_chart(self):
         fig = plt.figure()
-
-        fig.suptitle(chart_name)
 
         # Disable Kernel density estimation -> https://stackoverflow.com/a/57802471
         sns.distplot(self.data[self.x_axis_name], kde=True)
@@ -162,9 +155,8 @@ class BoxPlotChart(ADMChart):
         self.x_axis_name = self.x_axis_name[0] if isinstance(self.x_axis_name, list) else self.x_axis_name
         self.y_axis_name = self.y_axis_name[0] if isinstance(self.y_axis_name, list) else self.y_axis_name
 
-    def generate_chart(self, chart_name):
+    def generate_chart(self):
         fig = plt.figure()
-        fig.suptitle(chart_name)
 
         ax = sns.boxplot(x=self.data[self.x_axis_name], y=self.data[self.y_axis_name])
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
@@ -177,7 +169,7 @@ class MapChart(ADMChart):
         self.x_axis_name = self.x_axis_name[0] if isinstance(self.x_axis_name, list) else self.x_axis_name
 
     # Ejemplo de http://www.geomapik.com/desarrollo-programacion-gis/mapas-con-python-geopandas-matplotlib/
-    def generate_chart(self, chart_name):
+    def generate_chart(self):
         map_data = self.data
 
         # Control del tamaño de la figura del mapa
@@ -185,9 +177,6 @@ class MapChart(ADMChart):
 
         # Control del encuadre (área geográfica) del mapa
         # ax.axis([-12, 5, 32, 48])
-
-        # Control del título y los ejes
-        ax.set_title(chart_name, pad=20, fontdict={'fontsize': 20, 'color': '#4873ab'})
 
         ax.set_xlabel('Lon')
         ax.set_ylabel('Lat')

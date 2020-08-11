@@ -35,6 +35,25 @@ class IOChart:
         # use dispatch pattern to invoke method with same name
         getattr(self, args.command)()
 
+    def get_data(self, args):
+        if args.data is not None:
+            data_source_input = data_sources.UrlDataSourceInput(args.data)
+        elif not sys.stdin.isatty():
+            data_source_input = data_sources.StdinDataSourceInput(sys.stdin.read())
+        else:
+            raise CustomError('Especifique el contenido de los datos mediante el argumento --data o < NOMBRE FICHERO')
+
+        try:
+            data_source = data_sources.DataSource.get_instance(data_source_input)
+            return data_source.get_data()
+        except FileNotFoundError:
+            raise CustomError('No se ha encontrado el fichero especificado')
+        except urllib.error.HTTPError:
+            raise CustomError('Datos no encontrados mediante URL')
+
+    def get_subprog(self):
+        return '{} {}'.format(sys.argv[0], sys.argv[1])
+
     def chart(self):
         parser = argparse.ArgumentParser(
             prog=self.get_subprog(),
@@ -58,8 +77,8 @@ class IOChart:
         )
         parser.add_argument('--data', help='Url or path of file with data. Formats csv and json supported')
         parser.add_argument('--chart-type', help='Chart type', choices=list(chart_constructors.keys()))
-        parser.add_argument('--chart-name', help='Chart name', default='Chart name')
-        parser.add_argument('--chart-file-name', help='Chart file name')
+        parser.add_argument('--chart-name', help='Chart name')
+        parser.add_argument('--chart-file-name', help='Chart file name', default='chart')
         parser.add_argument('--group-by', help='Field name to group')
         parser.add_argument('--group-by-func', help='Grouping function', choices=list(group_by_functions.keys()),
                             default="sum")
@@ -71,23 +90,7 @@ class IOChart:
         if args.chart_type is not None and args.chart_type != 'histogram' and args.chart_type != 'map' and args.y_axis is None:
             raise CustomError('Debe especificar al menos un campo asociado al eje Y')
 
-        if args.chart_file_name is None:
-            args.chart_file_name = args.chart_name
-
-        if args.data is not None:
-            data_source_input = data_sources.UrlDataSourceInput(args.data)
-        elif not sys.stdin.isatty():
-            data_source_input = data_sources.StdinDataSourceInput(sys.stdin.read())
-        else:
-            raise CustomError('Especifique el contenido de los datos mediante el argumento --data o < NOMBRE FICHERO')
-
-        try:
-            data_source = data_sources.DataSource.get_instance(data_source_input)
-            data = data_source.get_data()
-        except FileNotFoundError:
-            raise CustomError('No se ha encontrado el fichero especificado')
-        except urllib.error.HTTPError:
-            raise CustomError('Datos no encontrados mediante URL')
+        data = self.get_data(args)
 
         # Se comprueba si los campos seleccionados para los ejes están presentes en el header del csv
         x_axis_name = args.x_axis
@@ -136,19 +139,26 @@ class IOChart:
             formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=80, width=130)
         )
         parser.add_argument('-x', help='x data', nargs='*', type=str)
-        parser.add_argument('-y', help='y data', required=True)
+        parser.add_argument('-y', help='y data', type=str)
         parser.add_argument('-d', '--data', help='Url or path of file with data. Formats csv and json supported')
-        parser.add_argument('--algorithm', help='Learning algorithm', choices=list(learning_constructors.keys()))
+        parser.add_argument(
+            '-a',
+            '--algorithm',
+            help='Learning algorithm',
+            choices=list(learning_constructors.keys()),
+            required=True
+        )
+        parser.add_argument('--n-clusters', help='Number of clusters', type=int, default=2)
+        parser.add_argument('--test-size', help='Test size from data. Ex: 0.2', type=float, default=0.2)
+        parser.add_argument('--max-depth', help='Max depth for tree algorithms', type=int, default=4)
         parser.add_argument('--as-json', default=False, action='store_true', help='Print result as json')
 
         args = parser.parse_args(sys.argv[2:])
+        data = self.get_data(args)
 
         learning_constructor = learning_constructors.get(args.algorithm)
-        algorithm = learning_constructor()
+        algorithm = learning_constructor(data=data, x=args.x, y=args.y, args=args)
         algorithm.run()
-
-    def get_subprog(self):
-        return '{} {}'.format(sys.argv[0], sys.argv[1])
 
 
 try:
