@@ -1,12 +1,14 @@
-from sklearn import datasets
 from sklearn.model_selection import train_test_split
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 class LearningAlgorithm:
-    def __init__(self):
-        pass
+    def __init__(self, data, x, y, args):
+        self.data = data
+        self.x = x
+        self.y = y
+        self.args = args
 
     def run(self):
         pass
@@ -14,19 +16,35 @@ class LearningAlgorithm:
 
 # algoritmo de aprendizaje de supervisado de clasificación
 class SupervisedLearningAlgorithm(LearningAlgorithm):
-    pass
+    def __init__(self, data, x, y, args):
+        super().__init__(data, x, y, args)
+        self.test_size = args.test_size
+
+    def object_to_int(self, column_name):
+        values = self.data[column_name].unique().tolist()
+        self.data[column_name].replace(values, range(len(values)), inplace=True)
+
+    def process_data(self):
+        for column in self.x:
+            if self.data.dtypes[column] == 'object':
+                self.object_to_int(column)
+
+        x = self.data[self.x]
+        if self.y in x:
+            x = x.drop([self.y], 1)
+        x = np.array(x)
+
+        y = np.array(self.data[self.y])
+        return x, y
 
 
 # NAIVE BAYES
 # https://www.youtube.com/watch?v=P930ev-eyVk&list=PLJjOveEiVE4Dk48EI7I-67PEleEC5nxc3&index=49
 class NaiveBayesAlgorithm(SupervisedLearningAlgorithm):
     def run(self):
-        dataset = datasets.load_breast_cancer()
+        x, y = self.process_data()
 
-        x = dataset.data
-        y = dataset.target
-
-        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=self.test_size)
 
         from sklearn.naive_bayes import GaussianNB
 
@@ -42,19 +60,18 @@ class NaiveBayesAlgorithm(SupervisedLearningAlgorithm):
         print('matriz confunsión')
         print(matrix)
 
+        from sklearn.metrics import precision_score
+        print('presicion', precision_score(y_test, y_pred))
+
 
 # https://www.youtube.com/watch?v=ZeRblDJ-Jug&list=PLJjOveEiVE4Dk48EI7I-67PEleEC5nxc3&index=50
 class DecisionTreeClassifierAlgorithm(SupervisedLearningAlgorithm):
     def run(self):
-        dataset = datasets.load_breast_cancer()
-
-        x = dataset.data
-        y = dataset.target
-
-        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+        x, y = self.process_data()
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=self.test_size)
 
         from sklearn.tree import DecisionTreeClassifier
-        algorithm = DecisionTreeClassifier(max_depth=5, criterion='entropy')
+        algorithm = DecisionTreeClassifier(max_depth=self.args.max_depth, criterion='entropy')
         algorithm.fit(x_train, y_train)
         y_pred = algorithm.predict(x_test)
 
@@ -74,22 +91,16 @@ class DecisionTreeClassifierAlgorithm(SupervisedLearningAlgorithm):
 # ÁRBOLES DE DECISIÓN REGRESIÓN
 class DecisionTreeRegressionAlgorithm(SupervisedLearningAlgorithm):
     def run(self):
-        dataset = datasets.load_boston()
+        x, y = self.process_data()
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=self.test_size)
 
-        # Columna 6 del dataset
-        x = dataset.data[:, np.newaxis, 5]
-        y = dataset.target
-
-        plt.scatter(x, y)
-        plt.show()
-
-        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
         from sklearn.tree import DecisionTreeRegressor
-        algorithm = DecisionTreeRegressor(max_depth=5)
+        algorithm = DecisionTreeRegressor(max_depth=self.args.max_depth)
         algorithm.fit(x_train, y_train)
 
         algorithm.predict(x_test)
-        # score = algorithm.score(x_test, y_test)
+        score = algorithm.score(x_test, y_test)
+        print('score', score)
 
 
 # algoritmo de aprendizaje no supervisado basado en clustering
@@ -100,16 +111,18 @@ class NoSupervisedLearningAlgorithm(LearningAlgorithm):
 # KMeans
 # https://www.youtube.com/watch?v=w2wzVg0owxU
 class KMeansAlgorithm(NoSupervisedLearningAlgorithm):
+    def __init__(self, data, x, y, args):
+        super().__init__(data, x[0], y, args)
+        self.n_clusters = args.n_clusters
+
     def run(self):
-        import pandas as pd
         from sklearn.cluster import KMeans
 
-        dataset = pd.read_csv('moviescs.csv')
-        x = dataset['cast_total_facebook_likes'].values
-        y = dataset['imdb_score'].values
-
+        x = self.data[self.x].values
+        y = self.data[self.y].values
         X = np.array(list(zip(x, y)))
-        algorithm = KMeans(n_clusters=4)
+
+        algorithm = KMeans(n_clusters=self.n_clusters)
         algorithm = algorithm.fit(X)
         labels = algorithm.predict(X)
         centroids = algorithm.cluster_centers_
@@ -121,7 +134,7 @@ class KMeansAlgorithm(NoSupervisedLearningAlgorithm):
 
         plt.scatter(x, y, c=assigned_colors, s=5)
         plt.scatter(centroids[:, 0], centroids[:, 1], c=colors[:len(centroids)], marker='*', zorder=10)
-        #plt.show()
+        plt.show()
 
         #sse = self.get_sse(X, labels, centroids)
 
