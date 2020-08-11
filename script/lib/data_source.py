@@ -51,7 +51,13 @@ class DataSource:
             pandas.read_json(data)
             return JsonDataSource(data_source_input)
         except ValueError:
+            pass
+
+        try:
+            pandas.read_csv(data)
             return CsvDataSource(data_source_input)
+        except (pandas.errors.ParserError, pandas.errors.EmptyDataError) as e:
+            return GeojsonDataSource(data_source_input)
 
 
 class JsonDataSource(DataSource):
