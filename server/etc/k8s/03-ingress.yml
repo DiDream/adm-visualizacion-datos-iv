@@ -9,7 +9,8 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
 spec:
   rules:
-  - http:
+  - host: edu.ajmonfue.me
+    http:
       paths:
       - path: /adm-4/api(/|$)(.*)
         backend:
