@@ -49,7 +49,7 @@ optional arguments:
 Ejemplo:
 
 ```
-$ python3 iochart.py chart --url http://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-06-2020.csv --x-axis Province_State --y-axis Confirmed --chart-type line
+$ python3 iochart.py chart --data http://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/04-06-2020.csv --x-axis Province_State --y-axis Confirmed --chart-type line
 ```
 
 #### Aplicar algoritmos de aprendizaje

@@ -53,11 +53,14 @@ class ADMChart:
     def set_type_chart(self, axes):
         pass
 
+    def set_chart_title(self, fig, title):
+        fig.suptitle(title)
+
     def output(self, args):
         figure = self.generate_chart()
 
         if args.chart_name is not None:
-            figure.suptitle(args.chart_name)
+            self.set_chart_title(figure, args.chart_name)
 
         if args.as_json:
             image_file = BytesIO()
@@ -165,8 +168,11 @@ class BoxPlotChart(ADMChart):
 
 class MapChart(ADMChart):
     def __init__(self, x_axis_name, y_axis_name, data):
-        super().__init__(x_axis_name, y_axis_name, data)
-        self.x_axis_name = self.x_axis_name[0] if isinstance(self.x_axis_name, list) else self.x_axis_name
+        super().__init__(x_axis_name[:1], y_axis_name, data)
+        self.ax = None
+
+    def set_chart_title(self, fig, title):
+        self.ax.set_title(title, pad=20, fontdict={'fontsize': 20, 'color': '#4873ab'})
 
     # Ejemplo de http://www.geomapik.com/desarrollo-programacion-gis/mapas-con-python-geopandas-matplotlib/
     def generate_chart(self):
@@ -180,6 +186,7 @@ class MapChart(ADMChart):
 
         ax.set_xlabel('Lon')
         ax.set_ylabel('Lat')
+        self.ax = ax
 
         # Añadir la leyenda separada del mapa
         from mpl_toolkits.axes_grid1 import make_axes_locatable
