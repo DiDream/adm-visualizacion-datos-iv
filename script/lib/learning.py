@@ -93,7 +93,7 @@ class DecisionTreeRegressionAlgorithm(SupervisedLearningAlgorithm):
     def run(self):
         x, y = self.process_data()
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=self.test_size)
-        
+
         from sklearn.tree import DecisionTreeRegressor
         algorithm = DecisionTreeRegressor(max_depth=self.args.max_depth)
         algorithm.fit(x_train, y_train)
