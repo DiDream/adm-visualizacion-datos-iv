@@ -2,15 +2,12 @@
 
 import argparse
 import sys
-from io import BytesIO
-import base64
 
-import json
-
-import chart as charts
-import data_source as data_sources
 import urllib
 
+import lib.data_source as data_sources
+from lib.chart import chart_constructors
+from lib.learning import learning_constructors
 
 class CustomError(Exception):
     pass
@@ -54,16 +51,23 @@ parser.add_argument(
     type=str
 )
 parser.add_argument('--data', help='Url or path of file with data. Only formats csv and json')
-parser.add_argument('--chart-type', help='Chart type', default='line', choices=list(charts.chart_constructors.keys()))
+parser.add_argument('--chart-type', help='Chart type', choices=list(chart_constructors.keys()))
 parser.add_argument('--chart-name', help='Chart name', default='Chart name')
 parser.add_argument('--chart-file-name', help='Chart file name')
 parser.add_argument('--as-json', default=False, action='store_true', help='Print result as json')
 parser.add_argument('--group-by', help='Print result as json')
 parser.add_argument('--group-by-func', help='Grouping function', choices=list(group_by_functions.keys()), default="sum")
+parser.add_argument('--learning', help='Learning algorithm', choices=list(learning_constructors.keys()))
 
 args = parser.parse_args()
-if args.chart_type != 'histogram' and args.chart_type != 'map' and args.y_axis is None:
+
+if args.chart_type is None and args.learning is None:
+    raise CustomError('Debe especificar un tipo de gráfica (--chart-type) o un algoritmo de aprendizaje (--learning)')
+elif args.chart_type is not None and args.chart_type != 'histogram' and args.chart_type != 'map' and args.y_axis is None:
     raise CustomError('Debe especificar al menos un campo asociado al eje Y')
+elif args.learning is not None and args.y_axis is None:
+    raise CustomError('Debe especificar el campo asociado a Y')
+
 
 if args.chart_file_name is None:
     args.chart_file_name = args.chart_name
@@ -122,23 +126,11 @@ if args.y_select is not None:
 # END select specific values
 
 
-chart_constructor = charts.chart_constructors.get(args.chart_type)
-chart = chart_constructor(x_axis_name, y_axis_name, data)
-chart_image = chart.generate_chart(args.chart_name)
-
-if args.as_json:
-    image_file = BytesIO()
-    chart_image.savefig(image_file, format='png', bbox_inches='tight')
-    image_file.seek(0)
-
-    result = {
-        'imageBase64': base64.b64encode(image_file.getvalue()).decode('utf8'),
-        'sourceData': json.loads(data.to_json(orient='table'))
-    }
-    print(json.dumps(result), end='')
-
-else:
-    # Renderiza la imagen al completo (bbox_inches='tight') -> https://stackoverflow.com/a/39089653
-    chart_image.savefig(args.chart_file_name, bbox_inches='tight')
-
-
+if args.chart_type is not None:
+    chart_constructor = chart_constructors.get(args.chart_type)
+    chart = chart_constructor(x_axis_name, y_axis_name, data)
+    chart.output(args)
+if args.learning is not None:
+    learning_constructor = learning_constructors.get(args.learning)
+    algorithm = learning_constructor()
+    algorithm.run()

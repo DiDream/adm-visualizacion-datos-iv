@@ -1,6 +1,10 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 import geopandas as gpd
+from io import BytesIO
+import base64
+
+import json
 
 
 class ADMChart:
@@ -49,6 +53,24 @@ class ADMChart:
 
     def set_type_chart(self, axes):
         pass
+
+    def output(self, args):
+        figure = self.generate_chart(args.chart_name)
+
+        if args.as_json:
+            image_file = BytesIO()
+            figure.savefig(image_file, format='png', bbox_inches='tight')
+            image_file.seek(0)
+
+            result = {
+                'imageBase64': base64.b64encode(image_file.getvalue()).decode('utf8'),
+                'sourceData': json.loads(self.data.to_json(orient='table'))
+            }
+            print(json.dumps(result), end='')
+
+        else:
+            # Renderiza la imagen al completo (bbox_inches='tight') -> https://stackoverflow.com/a/39089653
+            figure.savefig(args.chart_file_name, bbox_inches='tight')
 
 
 class LineChart(ADMChart):
