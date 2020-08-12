@@ -76,7 +76,7 @@ class IOChart:
             type=str
         )
         parser.add_argument('--data', help='Url or path of file with data. Formats csv and json supported')
-        parser.add_argument('--chart-type', help='Chart type', choices=list(chart_constructors.keys()))
+        parser.add_argument('--chart-type', help='Chart type', choices=list(chart_constructors.keys()), default='line')
         parser.add_argument('--chart-name', help='Chart name')
         parser.add_argument('--chart-file-name', help='Chart file name', default='chart')
         parser.add_argument('--group-by', help='Field name to group')

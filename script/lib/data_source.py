@@ -54,7 +54,7 @@ class DataSource:
             pass
 
         try:
-            pandas.read_csv(data)
+            pandas.read_csv(data_source_input.get_data())
             return CsvDataSource(data_source_input)
         except (pandas.errors.ParserError, pandas.errors.EmptyDataError) as e:
             return GeojsonDataSource(data_source_input)
