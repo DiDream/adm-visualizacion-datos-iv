@@ -8,8 +8,8 @@ import { MatSort } from '@angular/material/sort';
     selector: '[selectedByAxis]'
 })
 export class SelectedByAxisDirective {
-    @Input()
-    public selectedByAxis: string;
+    @Input('selectedByAxis')
+    public columnName: string;
 
     @HostBinding('class.x-axis-selected')
     protected xAxisSelected: boolean = false;
@@ -20,9 +20,9 @@ export class SelectedByAxisDirective {
     @Input()
     public set chartArguments(chartArguments: IChartArguments) {
         if (chartArguments) {
-            this.xAxisSelected = chartArguments.xAxis.some(axisName => axisName == this.selectedByAxis);
+            this.xAxisSelected = chartArguments.xAxis.some(axisName => axisName == this.columnName);
             if (chartArguments.yAxis) {
-                this.yAxisSelected = chartArguments.yAxis.some(axisName => axisName == this.selectedByAxis);
+                this.yAxisSelected = chartArguments.yAxis.some(axisName => axisName == this.columnName);
             }
         }
     }
