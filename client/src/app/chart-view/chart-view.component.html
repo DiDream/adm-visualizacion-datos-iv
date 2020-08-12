@@ -1,25 +1,24 @@
-
-<nb-alert *ngIf="commandArguments" status="info" class="mt-4">
-    <code>
+<div class="mt-2">
+    <nb-card *ngIf="chartBase64">
+        <nb-card-header>iochart.py</nb-card-header>
+        <nb-card-body style="text-align: center;">
+            <img [src]="chartBase64">
+        </nb-card-body>
+        <nb-card-footer style="background: #0095ff; color: white;">
+            <code>
 > python3 iochart.py {{commandArguments}}
-    </code>
-</nb-alert>
-<nb-tabset fullWidth>
-    <nb-tab tabTitle="Chart.js">
+            </code>
+        </nb-card-footer>
+    </nb-card>
+
+    <div [hidden]="chart == null">
         <nb-card>
+            <nb-card-header>Chart.js</nb-card-header>
             <nb-card-body>
                 <div style="min-height: 600px;">
                     <canvas #chartCanvasRef></canvas>
                 </div>
             </nb-card-body>
-            
         </nb-card>
-    </nb-tab>
-    <nb-tab tabTitle="Matplotlib">
-        <nb-card *ngIf="chartBase64">
-            <nb-card-body style="text-align: center;">
-                <img [src]="chartBase64">
-            </nb-card-body>
-        </nb-card>
-    </nb-tab>
-</nb-tabset>
+    </div>
+</div>

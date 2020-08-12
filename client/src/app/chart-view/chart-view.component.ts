@@ -16,7 +16,7 @@ export class ChartViewComponent {
     public data: any;
     public commandArguments: string;
 
-    private chart: Chart;
+    public chart: Chart;
     private chartContext: CanvasRenderingContext2D;
 
     ngAfterViewInit() {
