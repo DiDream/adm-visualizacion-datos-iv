@@ -54,7 +54,8 @@ class DataSource:
             pass
 
         try:
-            pd.read_csv(data_source_input.get_data())
+            # https://stackoverflow.com/a/43844998
+            pd.read_csv(data_source_input.get_data(), sep=None, engine='python')
             return CsvDataSource(data_source_input)
         except (pd.errors.ParserError, pd.errors.EmptyDataError) as e:
             return GeojsonDataSource(data_source_input)
@@ -69,7 +70,7 @@ class JsonDataSource(DataSource):
 class CsvDataSource(DataSource):
     def get_data(self):
         data = self.data_source_input.get_data()
-        return pd.read_csv(data)
+        return pd.read_csv(data, sep=None, engine='python')
 
 
 class GeojsonDataSource(DataSource):

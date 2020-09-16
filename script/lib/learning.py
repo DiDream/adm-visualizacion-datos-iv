@@ -2,6 +2,7 @@ from sklearn.model_selection import train_test_split, cross_val_score, ShuffleSp
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.datasets import load_boston
 
 
 class LearningAlgorithm:
@@ -20,6 +21,8 @@ class SupervisedLearningAlgorithm(LearningAlgorithm):
     name = 'Supervised Learning Algorithm'
 
     def __init__(self, data, x, y, args):
+        if x is None:
+            x = data.columns.tolist()
         super().__init__(data, x, y, args)
         self.test_size = args.test_size
 
@@ -64,6 +67,7 @@ class SupervisedLearningAlgorithm(LearningAlgorithm):
         ax.set_xlabel('scores')
         plt.show()
 
+
 # NAIVE BAYES
 # https://www.youtube.com/watch?v=P930ev-eyVk&list=PLJjOveEiVE4Dk48EI7I-67PEleEC5nxc3&index=49
 class NaiveBayesAlgorithm(SupervisedLearningAlgorithm):
@@ -101,17 +105,44 @@ class DecisionTreeClassifierAlgorithm(SupervisedLearningAlgorithm):
 # https://www.youtube.com/watch?v=gP2X8a3LaTM
 # ÁRBOLES DE DECISIÓN REGRESIÓN
 class DecisionTreeRegressionAlgorithm(SupervisedLearningAlgorithm):
+    name = 'Decision Tree Regression'
+
     def run(self):
+        # boston = load_boston()
+        # x, y = boston.data, boston.target
+
         x, y = self.process_data()
-        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=self.test_size)
+        X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=self.test_size)
 
         from sklearn.tree import DecisionTreeRegressor
         algorithm = DecisionTreeRegressor(max_depth=self.args.max_depth)
-        algorithm.fit(x_train, y_train)
+        algorithm.fit(X_train, y_train)
 
-        algorithm.predict(x_test)
-        score = algorithm.score(x_test, y_test)
-        print('score', score)
+        self.show_model_accuracy(algorithm,X_train, X_test, y_train, y_test)
+
+    def show_model_accuracy(self, model, X_train, X_test, y_train, y_test):
+        y_pred = model.predict(X_test)
+        score = model.score(X_test, y_test)
+        print('model score', score)
+
+        cv = ShuffleSplit(n_splits=7, test_size=self.test_size, random_state=0)
+        scores = cross_val_score(model, X_train, y_train, cv=cv)
+        print('cross_val_score', scores.mean())
+
+        fig, (axPred, axScore) = plt.subplots(ncols=2)
+        fig.suptitle('{} prediction'.format(self.name))
+
+        axPred.scatter(y_test, y_pred)
+        axPred.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()])
+        axPred.set_title('Predictions')
+        axPred.set_xlabel('correct values')
+        axPred.set_ylabel('predictions')
+
+        axScore.set_xlabel('scores')
+        axScore.set_title('Score {:.3f}'.format(scores.mean()))
+        sns.boxplot(x=scores, ax=axScore)
+
+        plt.show()
 
 
 # algoritmo de aprendizaje no supervisado basado en clustering

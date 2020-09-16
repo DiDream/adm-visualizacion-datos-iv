@@ -37,13 +37,13 @@ Es importante, para la ejecución de estos algoritmos, que las etiquetas tengan 
 #### Naive Bayes
 Para obtener el modelo a partir del algoritmo `Naive Bayes`, ejecutamos:
 ```bash
-> ./iochart.py learn -a naive-bayes --data assets/titanic.csv -x Sex Pclass Fare Embarked Survived -y Survived
+> ./iochart.py learn -a naive-bayes --data assets/titanic.csv -x Sex Pclass Fare Embarked -y Survived
 ```
 Nótese que con `-a` o `--algorithm` especificamos el algoritmo a ejecutar, en este caso `naive-bayes`.
 
 Cuya ejecución dará como resultado algo similar a:
 ```bash
-> ./iochart.py learn -a naive-bayes --data titanic.csv -x Sex Pclass Fare Embarked Survived -y Survived
+> ./iochart.py learn -a naive-bayes --data titanic.csv -x Sex Pclass Fare Embarked -y Survived
 Matriz confusión
 [[91 19]
  [18 51]]
@@ -62,12 +62,12 @@ De igual forma, se mostrará una gráfica de cajas y bigotes a partir de las dif
 De forma similar que con el algoritmo `Naive Bayes`, para obtener el modelo a partir del algoritmo de árboles de decisión, ejecutamos:
 
 ```bash
-> ./iochart.py learn -a tree-classifier --data assets/titanic.csv -x Sex Pclass Fare Embarked Survived -y Survived
+> ./iochart.py learn -a tree-classifier --data assets/titanic.csv -x Sex Pclass Fare Embarked -y Survived
 ```
 
 Lo cual, dará como resultado, algo similar a:
 ```bash
-> ./iochart.py learn -a tree-classifier --data assets/titanic.csv -x Sex Pclass Fare Embarked Survived -y Survived
+> ./iochart.py learn -a tree-classifier --data assets/titanic.csv -x Sex Pclass Fare Embarked -y Survived
 Matriz confusión
 [[101   6]
  [ 33  39]]
@@ -80,3 +80,35 @@ Y se mostrará la gráfica de cajas y bigotes con las precisiones obtenidas.
 | Precisión de Árboles de Decisión Clasificación |
 | --- |
 | ![Precisión de Árboles de Decisión Clasificación](assets/decision-tree-classifier-score.png) |
+
+### Algoritmos de regresión
+
+#### Árboles de Decisión Regresión
+Para obtener el modelo de aprendizaje a partir del algoritmo `Árboles de Decisión Regresión`, ejecutamos, por ejemplo:
+
+```bash
+> ./iochart.py learn -a tree-regression --data ./assets/winequality-red.csv -y quality
+```
+Nótese que al no especificar el campo `-x` se toman todos los campos, excepto el asignado a `y`.
+
+Como se puede ver, la predicción obtenida es mala (pasa lo mismo con los datos de [`script/assets/winequality-white.csv`](script/assets/winequality-white.csv)):
+```bash
+> ./iochart.py learn -a tree-regression --data ./assets/winequality-red.csv  -y quality
+model score 0.2692830829129489
+cross_val_score 0.31480678505264087
+````
+
+Lo cual se puede ver también en las gráficas mostradas:
+| Precisión de Algoritmos de regresión |
+| --- |
+| ![Precisión de Algoritmos de regresión](assets/winequality-red-score.png) |
+
+Por otro lado para demostrar la correcta implementación del algoritmo, he utilizando el dataset de boston de `sklearn`, obteniendo resultados más aceptables.
+```
+model score 0.809496091404841
+cross_val_score 0.7420437247991698
+```
+
+| Precisión de Algoritmos de regresión (Boston) |
+| --- |
+| ![Precisión de Algoritmos de regresión (Boston)](assets/boston-score.png) |
