@@ -1,6 +1,7 @@
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score, ShuffleSplit
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 class LearningAlgorithm:
@@ -16,6 +17,8 @@ class LearningAlgorithm:
 
 # algoritmo de aprendizaje de supervisado de clasificación
 class SupervisedLearningAlgorithm(LearningAlgorithm):
+    name = 'Supervised Learning Algorithm'
+
     def __init__(self, data, x, y, args):
         super().__init__(data, x, y, args)
         self.test_size = args.test_size
@@ -37,53 +40,61 @@ class SupervisedLearningAlgorithm(LearningAlgorithm):
         y = np.array(self.data[self.y])
         return x, y
 
+    def show_model_accuracy(self, model, X_train, X_test, y_train, y_test):
+        y_pred = model.predict(X_test)
+
+        # Representación de la precisión del modelo
+        from sklearn.metrics import confusion_matrix
+        matrix = confusion_matrix(y_test, y_pred)
+
+        print('Matriz confusión')
+        print(matrix)
+
+        from sklearn.metrics import precision_score
+        print('precision_score', precision_score(y_test, y_pred))
+
+        # https://www.youtube.com/watch?v=L_dQrZZjGDg&ab_channel=DataTalks
+        cv = ShuffleSplit(n_splits=7, test_size=self.test_size, random_state=0)
+        scores = cross_val_score(model, X_train, y_train, cv=cv)
+        print('cross_val_score', scores.mean())
+
+        fig = plt.figure()
+        fig.suptitle('{} score {:.3f}'.format(self.name, scores.mean()))
+        ax = sns.boxplot(x=scores)
+        ax.set_xlabel('scores')
+        plt.show()
 
 # NAIVE BAYES
 # https://www.youtube.com/watch?v=P930ev-eyVk&list=PLJjOveEiVE4Dk48EI7I-67PEleEC5nxc3&index=49
 class NaiveBayesAlgorithm(SupervisedLearningAlgorithm):
+    name = 'Naive Bayes'
+
     def run(self):
         x, y = self.process_data()
 
-        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=self.test_size)
+        X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=self.test_size)
 
         from sklearn.naive_bayes import GaussianNB
 
         algorithm = GaussianNB()
-        algorithm.fit(x_train, y_train)
+        algorithm.fit(X_train, y_train)
 
-        y_pred = algorithm.predict(x_test)
-
-        from sklearn.metrics import confusion_matrix
-
-        matrix = confusion_matrix(y_test, y_pred)
-
-        print('matriz confunsión')
-        print(matrix)
-
-        from sklearn.metrics import precision_score
-        print('presicion', precision_score(y_test, y_pred))
+        self.show_model_accuracy(algorithm, X_train, X_test, y_train, y_test)
 
 
 # https://www.youtube.com/watch?v=ZeRblDJ-Jug&list=PLJjOveEiVE4Dk48EI7I-67PEleEC5nxc3&index=50
 class DecisionTreeClassifierAlgorithm(SupervisedLearningAlgorithm):
+    name = 'Decision Tree Classifier'
+
     def run(self):
         x, y = self.process_data()
-        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=self.test_size)
+        X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=self.test_size)
 
         from sklearn.tree import DecisionTreeClassifier
         algorithm = DecisionTreeClassifier(max_depth=self.args.max_depth, criterion='entropy')
-        algorithm.fit(x_train, y_train)
-        y_pred = algorithm.predict(x_test)
+        algorithm.fit(X_train, y_train)
 
-        from sklearn.metrics import confusion_matrix
-
-        matrix = confusion_matrix(y_test, y_pred)
-
-        print('matriz confunsión')
-        print(matrix)
-
-        from sklearn.metrics import precision_score
-        print('presicion', precision_score(y_test, y_pred))
+        self.show_model_accuracy(algorithm, X_train, X_test, y_train, y_test)
 
 
 # un algoritmo de aprendizaje de supervisado de regresión

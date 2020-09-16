@@ -3,3 +3,4 @@
 *.json
 *.geojson
 !assets/*.geojson
+!assets/*.csv
