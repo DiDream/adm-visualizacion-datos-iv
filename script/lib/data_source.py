@@ -1,4 +1,4 @@
-import pandas as pandas
+import pandas as pd
 from io import StringIO
 import ssl
 import geopandas as gpd
@@ -48,28 +48,28 @@ class DataSource:
             elif data.endswith('.geojson'):
                 return GeojsonDataSource(data_source_input)
         try:
-            pandas.read_json(data)
+            pd.read_json(data)
             return JsonDataSource(data_source_input)
         except ValueError:
             pass
 
         try:
-            pandas.read_csv(data_source_input.get_data())
+            pd.read_csv(data_source_input.get_data())
             return CsvDataSource(data_source_input)
-        except (pandas.errors.ParserError, pandas.errors.EmptyDataError) as e:
+        except (pd.errors.ParserError, pd.errors.EmptyDataError) as e:
             return GeojsonDataSource(data_source_input)
 
 
 class JsonDataSource(DataSource):
     def get_data(self):
         data = self.data_source_input.get_data()
-        return pandas.read_json(data)
+        return pd.read_json(data)
 
 
 class CsvDataSource(DataSource):
     def get_data(self):
         data = self.data_source_input.get_data()
-        return pandas.read_csv(data)
+        return pd.read_csv(data)
 
 
 class GeojsonDataSource(DataSource):

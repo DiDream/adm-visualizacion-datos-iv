@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-import geopandas as gpd
 from io import BytesIO
 import base64
 
