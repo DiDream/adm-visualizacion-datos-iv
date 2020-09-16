@@ -96,7 +96,7 @@ Como se puede ver, la predicción obtenida es mala (pasa lo mismo con los datos 
 > ./iochart.py learn -a tree-regression --data ./assets/winequality-red.csv  -y quality
 model score 0.2692830829129489
 cross_val_score 0.31480678505264087
-````
+```
 
 Lo cual se puede ver también en las gráficas mostradas:
 | Precisión de Algoritmos de regresión |
@@ -112,3 +112,17 @@ cross_val_score 0.7420437247991698
 | Precisión de Algoritmos de regresión (Boston) |
 | --- |
 | ![Precisión de Algoritmos de regresión (Boston)](assets/boston-score.png) |
+
+### Algoritmos de aprendizaje no supervisado basado en clustering
+#### K-Means
+Para ejecutar el algoritmo, podemos ejecutar el comando:
+```bash
+> ./iochart.py learn --data moviescs.csv -x cast_total_facebook_likes -y imdb_score --algorithm k-means
+```
+Mediante el argumento `--n-clusters` podemos especificar los clusters que queremos obtener, por defecto es 2.
+
+El comando mostrará como resultado una gráfica con los clústeres coloreados y su centroide como `*`.
+
+| K-Means con 2 clusters | k-Means con 3 clusters |
+| --- | --- |
+| ![K-Means con 2 clusters](assets/k-means-clusters-2.png) | ![k-Means con 3 clusters](assets/k-means-clusters-3.png) |
