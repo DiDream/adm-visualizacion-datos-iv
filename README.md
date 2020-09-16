@@ -32,7 +32,7 @@ Que dará como resultado [`natalidad.png`](assets/natalidad.png)
 ### 2. Utiliza la librería scikit-learn para desarrollar algoritmos de aprendizaje sobre los conjunto de datos que has venido utilizando hasta este momento. El estudio debe considerar, al menos, un algoritmo de aprendizaje de supervisado de clasificación, uno de regresión y un algoritmo de aprendizaje no supervisado basado en clustering. Utiliza alguna herramienta que permita representar gráficamente el resultado que has obtenido.
 
 ### Algoritmos supervisados de clasificación
-Es importante, para la ejecución de estos algoritmos, que las etiquetas tengan valores binarios, discretos. El fichero usado como ejemplo es [script/assets/titanic.csv](script/assets/titanic.csv), en el que cada fila almacena los datos de un pasajero del Titanic (nombre, sexo, edad, clase, etc) y su supervivencia en el accidente.
+Es importante, para la ejecución de estos algoritmos, que las etiquetas sean valores discretos. El fichero usado como ejemplo es [script/assets/titanic.csv](script/assets/titanic.csv), en el que cada fila almacena los datos de un pasajero del Titanic (nombre, sexo, edad, clase, etc) y su supervivencia en el accidente.
 
 #### Naive Bayes
 Para obtener el modelo a partir del algoritmo `Naive Bayes`, ejecutamos:
